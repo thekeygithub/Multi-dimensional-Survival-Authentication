@@ -1,0 +1,97 @@
+package com.xcuni.guizhouyl.task;
+
+import com.alibaba.fastjson.JSONObject;
+import com.xcuni.guizhouyl.config.YanglaoAppData;
+import com.xcuni.guizhouyl.rest.entity.FectchUserInfoRequestEntity;
+import com.xcuni.guizhouyl.utils.HttpUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.Trigger;
+import org.springframework.scheduling.TriggerContext;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
+import org.springframework.stereotype.Component;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.ScheduledFuture;
+
+@Component
+public class ScheduleConfig {
+    final static Logger LOGGER = LoggerFactory.getLogger(ScheduleConfig.class);
+    @Autowired
+    private YanglaoAppData yanglaoAppData;
+    @Autowired
+    private ThreadPoolTaskScheduler threadPoolTaskScheduler;
+    @Value("${server.port}")
+    private String serverPort;
+
+    @Bean
+    public ThreadPoolTaskScheduler threadPoolTaskScheduler(){
+        return new ThreadPoolTaskScheduler();
+    }
+    private ScheduledFuture<?> future;
+
+    private String cron = "";
+
+    public String getCron() {
+        return cron;
+    }
+
+    public void stopCron() {
+        if (future != null) {
+            //取消定时任务
+            future.cancel(true);
+        }
+    }
+    public void setCron(String cron) {
+        this.cron = cron;
+        //stopCron();
+        future = threadPoolTaskScheduler.schedule(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    FectchUserInfoRequestEntity requestEntity = new FectchUserInfoRequestEntity();
+                    requestEntity.setLocation("5200");
+                    requestEntity.setPageStart(1);
+                    requestEntity.setPageSize(200);
+                    Calendar cal=Calendar.getInstance();
+                    int year=cal.get(Calendar.YEAR);
+                    int month=cal.get(Calendar.MONTH)+1;//Calendar的月份从0开始获取到的月份比实际少1
+                    String accountDate = String.valueOf(year)+String.valueOf(month);
+                    requestEntity.setDate(accountDate);
+                    //System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+                    //String url = "http://127.0.0.1:"+serverPort+"/yanglao/api/startVerification";
+                    String url = yanglaoAppData.getYanglaoVerifyUrl();
+                    LOGGER.info("启动本月验证任务：url：{}，request:{}",url,requestEntity.toString());
+                    String response = HttpUtils.sendPOST(url, JSONObject.toJSONString(requestEntity));
+                    JSONObject resObj = JSONObject.parseObject(response);
+                    String rescode = resObj.getString("statusCode");
+                    if(rescode.equals("200")){
+                        LOGGER.info("本月验证任务开始执行：{}",response);
+                    }else {
+                        LOGGER.error("本月验证任务启动失败，请检查配置！--{}",response);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Trigger() {
+            @Override
+            public Date nextExecutionTime(TriggerContext triggerContext) {
+                if ("".equals(cron) || cron == null) {
+                    return null;
+                }
+                // 定时任务触发，可修改定时任务的执行周期
+                CronTrigger trigger = new CronTrigger(cron);
+                Date nextExecDate = trigger.nextExecutionTime(triggerContext);
+                return nextExecDate;
+            }
+        });
+    }
+}
+

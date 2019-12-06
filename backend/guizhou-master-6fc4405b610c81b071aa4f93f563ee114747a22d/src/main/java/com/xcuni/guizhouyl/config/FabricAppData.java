@@ -1,0 +1,61 @@
+package com.xcuni.guizhouyl.config;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Component
+@Data
+//@PropertySource("classpath:application.yml")
+@ConfigurationProperties(prefix = "fabric")
+@Configuration
+public class FabricAppData {
+    private String fabricConfigRootDir;
+    private String fabricNetworkConfig;
+    private String fabricUserConfig;
+    private String fabricCryptoConfig;
+    private String fabricChannelArtifacts;
+    private boolean fabricRunningTls;
+    private String fabricVersion;
+    private List<ChannelData> fabricChannels;
+
+    public List<String> getChannelNameList() {
+        if (fabricChannels == null || fabricChannels.size() < 1)
+            return null;
+        List<String> resList = new ArrayList<>();
+        fabricChannels.forEach(eachChannel -> {
+            resList.add(eachChannel.getChannelName());//得到application配置文件中的通道名称  channel-name: "gzylchannel"
+        });
+        return resList;
+    }
+
+    public HashMap<String, ChannelData> buildChannelMap() {
+        if (fabricChannels == null || fabricChannels.size() < 1)
+            return null;
+        HashMap<String, ChannelData> channelDataHashMap = new HashMap<>();
+        fabricChannels.forEach(eachChannel -> {
+            channelDataHashMap.put(eachChannel.getChannelName(), eachChannel);
+        });
+        return channelDataHashMap;
+    }
+
+    public ChannelData getChannelData(String channelName) {
+        if (fabricChannels == null || fabricChannels.size() < 1)
+            return null;
+        for (ChannelData data : fabricChannels) {
+            if (data.getChannelName().equals(channelName)) {
+                return data;
+            }
+        }
+        return null;
+    }
+
+
+}

@@ -1,0 +1,110 @@
+package com.xcuni.guizhouyl.rest.controller;
+
+import com.alibaba.fastjson.JSONObject;
+import com.xcuni.guizhouyl.fabric.FabricOperation;
+import com.xcuni.guizhouyl.rest.entity.ChaincodeRequestEntity;
+import com.xcuni.guizhouyl.rest.entity.InvokeVerificationEntity;
+import com.xcuni.guizhouyl.rest.entity.QueryUserModelEntity;
+import com.xcuni.guizhouyl.rest.entity.RecordDataSrcCallNumEntity;
+import com.xcuni.guizhouyl.rest.result.JsonRESTResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+
+@RestController
+@RequestMapping(value = "/fabric/chaincode/")
+public class FabricChaincodeController {
+    final static Logger LOGGER = LoggerFactory.getLogger(FabricChaincodeController.class);
+
+    @Autowired
+    FabricOperation fabricOperation;
+    final static private String SUCCESS_CODE = "200";
+    final static private int SUCCESS = 200;
+    final static private int ERROR = 500;
+
+    @RequestMapping(value =  "/queryChaincode", method = RequestMethod.POST)
+    public String queryChaincode(@RequestBody ChaincodeRequestEntity queryReq) throws IOException {
+        JSONObject resobj;
+        try {
+            resobj = fabricOperation.queryOnFabric(queryReq.getChannelName(), queryReq.getChaincodeName(),queryReq.getFunc(),queryReq.getArgs());
+        }catch(Exception e){
+            LOGGER.info("queryChaincode异常:{}",e.getMessage());
+            return new JsonRESTResult(e.getMessage()).encode();
+        }
+        String code = resobj.getString("code");
+        if(code!=null && !code.equals(SUCCESS_CODE))
+            return  new JsonRESTResult(ERROR, resobj.toJSONString()).encode();
+        return new JsonRESTResult(resobj).encode();
+    }
+
+    @RequestMapping(value =  "/queryUserStatus", method = RequestMethod.POST)
+    public String queryUserModel(@RequestBody QueryUserModelEntity queryReq) throws IOException {
+        JSONObject resobj;
+        try {
+            resobj = fabricOperation.queryUserModelStatus(queryReq.getId(), queryReq.getName());
+        }catch(Exception e){
+            LOGGER.info("queryUserModel异常:{}",e.getMessage());
+            return new JsonRESTResult(e.getMessage()).encode();
+        }
+        String code = resobj.getString("code");
+        if(code!=null && !code.equals(SUCCESS_CODE))
+            return  new JsonRESTResult(ERROR, resobj.toJSONString()).encode();
+        return new JsonRESTResult(resobj).encode();
+    }
+
+    @RequestMapping(value =  "/invokeChaincode", method = RequestMethod.POST)
+    public String invokeChaincode(@RequestBody ChaincodeRequestEntity req) throws IOException {
+        JSONObject resobj;
+        try {
+            resobj = fabricOperation.invokeOnFabric(req.getChannelName(),req.getChaincodeName(),req.getFunc(),req.getArgs());
+        }catch(Exception e){
+            LOGGER.info("invokeChaincode异常:{}",e.getMessage());
+            return new JsonRESTResult(e.getMessage()).encode();
+        }
+        String code = resobj.getString("code");
+        if(code!=null && !code.equals(SUCCESS_CODE))
+            return  new JsonRESTResult(ERROR, resobj.toJSONString()).encode();
+        return new JsonRESTResult(resobj).encode();
+    }
+
+    @RequestMapping(value =  "/invokeVerification", method = RequestMethod.POST)
+    public String invokeVerification(@RequestBody InvokeVerificationEntity req) throws IOException {
+        JSONObject resobj;
+        try {
+            LOGGER.info("invokeVerification-id:{},date:{},data:{}",req.getId(),req.getDate(),req.getUserDataJson());
+            resobj = fabricOperation.invokeVerficationOnFabric(req.getId(),req.getDate(),req.getUserDataJson());
+        }catch(Exception e){
+            LOGGER.info("invokeVerification异常:{}",e.getMessage());
+            return new JsonRESTResult(ERROR,e.getMessage()).encode();
+        }
+        String code = resobj.getString("code");
+        if(code!=null && !code.equals(SUCCESS_CODE)) {
+            return new JsonRESTResult(ERROR, resobj.toJSONString()).encode();
+        }
+        return new JsonRESTResult(resobj).encode();
+    }
+
+    @RequestMapping(value =  "/recordDataSrcCallNum", method = RequestMethod.POST)
+    public String recordDataSrcCallNum(@RequestBody RecordDataSrcCallNumEntity req) throws IOException {
+        JSONObject resobj;
+        try {
+            LOGGER.info("recordDataSrcCallNum:data: {},date:{},num:{}",req.getDataSrc(),req.getDate(),req.getCallNum());
+            resobj = fabricOperation.invokeCallNumOnFabric(req.getDataSrc(),req.getDate(),req.getCallNum());
+        }catch(Exception e){
+            LOGGER.info("recordDataSrcCallNum:{}",e.getMessage());
+            return new JsonRESTResult(ERROR,e.getMessage()).encode();
+        }
+        String code = resobj.getString("code");
+        if(code!=null && !code.equals(SUCCESS_CODE)) {
+            return new JsonRESTResult(ERROR, resobj.toJSONString()).encode();
+        }
+        return new JsonRESTResult(resobj).encode();
+    }
+
+}

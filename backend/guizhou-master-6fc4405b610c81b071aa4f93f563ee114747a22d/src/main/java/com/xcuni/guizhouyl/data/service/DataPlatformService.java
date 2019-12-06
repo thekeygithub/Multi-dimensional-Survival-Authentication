@@ -1,0 +1,94 @@
+package com.xcuni.guizhouyl.data.service;
+
+import com.alibaba.fastjson.JSONObject;
+import com.xcuni.guizhouyl.config.YanglaoAppData;
+import com.xcuni.guizhouyl.data.enums.Exceptions;
+import com.xcuni.guizhouyl.rest.entity.*;
+import com.xcuni.guizhouyl.utils.HttpUtils;
+import com.xcuni.guizhouyl.utils.StringUtils;
+import lombok.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+@Data
+@Service
+public class DataPlatformService {
+    final static Logger LOGGER = LoggerFactory.getLogger(DataPlatformService.class);
+    final static String SUCCESS_CODE = "200";
+    @Autowired
+    YanglaoAppData yanglaoAppData;
+    @Autowired
+    DataDictService dataDictService;
+    @Value("${server.port}")
+    private String serverPort;
+
+    public FetchUserInfoResultEntity fetchUserList(FectchUserInfoRequestEntity requestEntity) throws RuntimeException {
+        if (requestEntity == null || !StringUtils.hasText(requestEntity.getLocation())
+                || !StringUtils.hasText(requestEntity.getDate())) {
+            LOGGER.error("fetchUserList:输入参数错误！");
+            throw new RuntimeException(Exceptions.ParamFormatInvalid.toString());
+        }
+        JSONObject reqObj = new JSONObject();
+        reqObj.put("Location", requestEntity.getLocation());
+        reqObj.put("Date", requestEntity.getDate());
+        reqObj.put("PageStart", requestEntity.getPageStart());
+        reqObj.put("PageSize", requestEntity.getPageSize());
+
+        String url = yanglaoAppData.getGetUserListUrl();
+        //JSONObject resobj;
+        FetchUserInfoResultEntity resultEntity;// = new FetchUserInfoResultEntity();
+        try {
+            String response = HttpUtils.sendPOST(url, reqObj);
+            //解析response
+            resultEntity = JSONObject.parseObject(response, FetchUserInfoResultEntity.class);
+
+        } catch (Exception e) {
+            LOGGER.error("fetchUserList:数据平台API服务异常！", e);
+            throw new RuntimeException(e);
+        }
+
+        if (resultEntity == null) {
+            LOGGER.error("fetchUserList:数据平台未返回用户列表！地址ID：{}", requestEntity.getLocation());
+            throw new RuntimeException(Exceptions.ObjectNotFound.toString());
+        }
+        return resultEntity;
+    }
+
+    public FetchUserDataResultEntity fetchUserData(FetchUserDataRequestEntity requestEntity) throws RuntimeException {
+        if (requestEntity == null || requestEntity.getUserInfo() == null
+                || requestEntity.getTargetDataList() == null) {
+            LOGGER.error("fetchUserData:输入参数错误！");
+            throw new RuntimeException(Exceptions.ParamFormatInvalid.toString());
+        }
+
+        String reqStr = "";
+        FetchUserDataResultEntity resultEntity;
+        try {
+//            JSONObject reqObj = JSONObject.parseObject(reqStr);
+            reqStr = JSONObject.toJSONString(requestEntity);
+
+        } catch (Exception e) {
+            LOGGER.error("fetchUserData:参数json格式错误！");
+            throw new RuntimeException(Exceptions.ParamFormatInvalid.toString());
+        }
+        try {
+            String url = yanglaoAppData.getGetUserDataUrl();
+            String response = HttpUtils.sendPOST(url, reqStr);
+            //解析response
+            resultEntity = JSONObject.parseObject(response, FetchUserDataResultEntity.class);
+        } catch (Exception e) {
+            LOGGER.error("fetchUserList:数据平台API服务异常！", e);
+            throw new RuntimeException(e);
+        }
+
+//        if (resultEntity == null){
+//            LOGGER.error("fetchUserList:数据平台未返回用户数据！ID：{}",requestEntity.getUserInfo().getId());
+//            throw new RuntimeException(Exceptions.ObjectNotFound.toString());
+//        }
+        return resultEntity;
+    }
+
+}

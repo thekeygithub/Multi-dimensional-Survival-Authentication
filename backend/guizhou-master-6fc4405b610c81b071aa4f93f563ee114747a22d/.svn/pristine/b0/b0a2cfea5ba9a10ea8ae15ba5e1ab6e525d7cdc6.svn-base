@@ -1,0 +1,92 @@
+package com.xcuni.guizhouyl.task;
+
+import com.alibaba.fastjson.JSONObject;
+import com.xcuni.guizhouyl.ApplicationSetup;
+import com.xcuni.guizhouyl.config.YanglaoAppData;
+import com.xcuni.guizhouyl.data.RedisClient;
+import com.xcuni.guizhouyl.data.service.DataDictService;
+import com.xcuni.guizhouyl.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import java.io.File;
+
+import static java.lang.Thread.sleep;
+
+@Component
+public class ScanExecuteDateTask {
+    final static private Logger LOGGER = LoggerFactory.getLogger(ScanExecuteDateTask.class);
+    @Autowired
+    private YanglaoAppData yanglaoAppData;
+    @Autowired
+    private DataDictService dataDictService;
+    @Autowired
+    private ScheduleConfig scheduleConfig;
+
+    //初始化民族词典
+    public void readExeDateConfig() throws RuntimeException {
+//        String path = yanglaoAppData.getYanglaoConfigRootPath()+yanglaoAppData.getExecDatePath();
+        String path = yanglaoAppData.getExecDatePath();
+        if (path.isEmpty())
+            throw new RuntimeException("请检查执行时间配置！");
+        readExecDateConfig(path);
+    }
+
+    private void readExecDateConfig(String path) throws RuntimeException {
+        try{
+//            String jsStr = dataDictService.readStrFromFile(path);
+            File file = new File(path);
+            String jsStr = dataDictService.readStrFromFile(file);
+            if(!jsStr.equals("")){
+                JSONObject jsObj = JSONObject.parseObject(jsStr);
+                String execDay = jsObj.getString("executeDay");
+                String execHour = jsObj.getString("executeHour");
+
+                if(StringUtils.isBlank(execDay)){
+                    LOGGER.info("养老金发放验证任务日期尚未配置");
+                    return;
+                }
+                String builtCron = buildCronString(execDay,execHour);
+                String currCron = RedisClient.get("EXEC-DATE");
+                if(StringUtils.isBlank(currCron)) {
+                    RedisClient.set("EXEC-DATE", builtCron);
+                    LOGGER.info("养老金发放验证任务设置为{}",builtCron);
+                    scheduleConfig.setCron(builtCron);
+                    return;
+                }
+                if(!currCron.equals(builtCron)){
+                    LOGGER.info("养老金发放验证任务变更为{}",builtCron);
+                    scheduleConfig.stopCron();//停止现有任务
+                    sleep(3000);
+                    //builtCron = "30 0/1 * * * ? ";//testing
+                    scheduleConfig.setCron(builtCron);
+                    RedisClient.set("EXEC-DATE",builtCron);
+                }
+            }
+        }catch(Exception e){
+            throw new RuntimeException("初始化执行日期配置失败！"+e.getMessage());
+        }
+    }
+
+    //每月指定日期的制定小时开始
+    //0 0 8 22 * ?
+    private String buildCronString(String day, String hour){
+        if(StringUtils.isBlank(hour))
+            hour="8";
+        return "0 0 "+hour+" "+day+" * ?";
+    }
+
+    //每30分钟对文件读取一次，查看是否有变化，有则写入redis
+    @Scheduled(cron = "0 0/30 * * * ? ")
+//    @Scheduled(cron = "0 0/1 * * * ? ")
+    public void scanExecDateConfig(){
+        int appType = yanglaoAppData.getYanglaoAppType();
+        if(yanglaoAppData.isEnableScheduleJob()
+                && (appType == ApplicationSetup.YANGLAO_APP_INTEGRATED || appType == ApplicationSetup.YANGLAO_APP_PRODUCER)) {
+            readExeDateConfig();
+        }
+    }
+}

@@ -1,0 +1,160 @@
+package com.xcuni.guizhouyl.rest.thread;
+
+import com.alibaba.fastjson.JSONObject;
+import com.xcuni.guizhouyl.config.YanglaoAppData;
+import com.xcuni.guizhouyl.data.service.DataDictService;
+import com.xcuni.guizhouyl.data.RedisClient;
+import com.xcuni.guizhouyl.rest.controller.YanglaoAppController;
+import com.xcuni.guizhouyl.rest.entity.RecordDataSrcCallNumEntity;
+import com.xcuni.guizhouyl.data.service.DataPlatformService;
+import com.xcuni.guizhouyl.data.service.RedisKeyService;
+import com.xcuni.guizhouyl.utils.HttpUtils;
+import com.xcuni.guizhouyl.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.text.DecimalFormat;
+import java.util.Set;
+
+import static java.lang.Thread.sleep;
+
+public class VerificationProgressScanner implements Runnable {
+    final static private Logger LOGGER = LoggerFactory.getLogger(VerificationProgressScanner.class);
+    private YanglaoAppData yanglaoAppData;
+    private RedisKeyService redisKeyService;
+    private DataPlatformService dataPlatformService;
+    private DataDictService dataDictService;
+
+    public VerificationProgressScanner(YanglaoAppData yanglaoAppData, RedisKeyService redisKeyService,
+                                       DataDictService dataDictService, DataPlatformService dataPlatformService) {
+        this.yanglaoAppData = yanglaoAppData;
+        this.redisKeyService = redisKeyService;
+        this.dataDictService = dataDictService;
+        this.dataPlatformService = dataPlatformService;
+    }
+
+    public void retryFailedList() {
+        String failedQkey = redisKeyService.getFailedUserInfoQueueKey();
+        Long len = RedisClient.llen(failedQkey);
+        //只pop当前队列中的用户
+        //如果继续失败，那么还是会被lpush入队列
+        for (int i = 0; i < len; i++) {
+            String userInfo = RedisClient.rpop(failedQkey);
+            LOGGER.info("重新验证用户{}", userInfo);
+            FetchUserDataRunner userDataRunner = new FetchUserDataRunner(userInfo, dataDictService,
+                    dataPlatformService, redisKeyService);
+            userDataRunner.run();
+        }
+    }
+
+    public void recordDataSrcCallNum() {
+        LOGGER.info("记录数据源验证次数上链");
+        String dataSrcSetKey = redisKeyService.getDataSrcSetKey();
+        Set<String> dataSrcSet = RedisClient.smembers(dataSrcSetKey);
+        for (String dataSrc : dataSrcSet) {
+            RecordDataSrcCallNumEntity callNumEntity = new RecordDataSrcCallNumEntity();
+            callNumEntity.setDataSrc(dataSrc);
+            callNumEntity.setDate(YanglaoAppController.getVerificationDate());
+            String dataSrcKey = redisKeyService.getDataSrcQueryNumKey(dataSrc);
+            String num = RedisClient.get(dataSrcKey);
+            callNumEntity.setCallNum(num);
+
+            String url = yanglaoAppData.getFabricRecordCallnumUrl();
+            try {
+                String response = HttpUtils.sendPOST(url, JSONObject.toJSONString(callNumEntity));
+                JSONObject respObj = JSONObject.parseObject(response);
+                String statusCode = respObj.getString("statusCode");
+                if (statusCode != null && statusCode.equals("200")) {
+                    LOGGER.info("数据源{}调用次数{}存储成功。", dataSrc, num);
+                } else {
+                    LOGGER.error("数据源{}调用次数{}存储失败,。", dataSrc, num);
+                }
+            } catch (Exception e) {
+                LOGGER.error("recordDataSrcCallNum发生异常!{}", e.getMessage());
+            }
+        }
+
+    }
+
+    @Override
+    public void run() {
+        LOGGER.info("This is verificaton progress scanner thread........");
+        int currentCount = 0;
+        double percentage = 0.0;
+        int retry = 0;
+        boolean complete = false;
+
+        String totalCountKey = redisKeyService.getTotalUserCountKey();
+        String succCountKey = redisKeyService.getSuccUserCountKey();
+        String failedQkey = redisKeyService.getFailedUserInfoQueueKey();
+
+        while (!complete) {
+            int totalCount = currentCount;
+            int succCount = 0;
+            Long failedCount = 0L;
+            String totalCountStr = RedisClient.get(totalCountKey);
+            if (StringUtils.isNotBlank(totalCountStr))
+                totalCount = Integer.parseInt(totalCountStr);
+            String succCountStr = RedisClient.get(succCountKey);
+            if (StringUtils.isNotBlank(succCountStr))
+                succCount = Integer.parseInt(succCountStr);
+            failedCount = RedisClient.llen(failedQkey);
+
+            //如果总数比current大，那么说明还在继续进行用户列表读取，sleep两秒后继续
+            if (totalCount > currentCount || totalCount == 0) {
+                LOGGER.debug("VerificationProgressScanner,{}>{},继续执行...", totalCount, currentCount);
+                currentCount = totalCount;
+                retry = 0;//
+                try {
+                    sleep(2000);
+                } catch (Exception e) {
+                    LOGGER.error("VerificationProgressScanner sleep 出错了！");
+                }
+            } else { //用户基本拉取完成, 睡眠3秒后认为用户数已经读完
+                LOGGER.debug("VerificationProgressScanner,{}-{},用户列表获取结束...", totalCount, currentCount);
+                double x = (succCount + failedCount) * 1.0;
+                percentage = x / totalCount;
+                DecimalFormat df = new DecimalFormat("0.00%");
+                String result = df.format(percentage);
+                LOGGER.info("读取用户总数{}名，已完成{}。", totalCount, result);
+                LOGGER.info("成功验证用户{}名", succCount);
+                LOGGER.info("失败验证用户{}名", failedCount);
+//                try {
+//                    sleep(2000);
+//                } catch (Exception e) {
+//                    LOGGER.error("VerificationProgressScanner sleep 出错了！");
+//                }
+                if ((totalCount == succCount + failedCount)) {
+                    if (failedCount > 0) {
+                        LOGGER.info("VerificationProgressScanner: 对失败用户进行重试...");
+                        if (retry < 3) {
+                            LOGGER.info("VerificationProgressScanner: 重试{}...", retry + 1);
+                            retry++;
+                            retryFailedList();
+                        } else {
+                            LOGGER.info("VerificationProgressScanner: 重试完成，验证过程结束...");
+                            complete = true;
+                        }
+                    } else {
+                        LOGGER.info("VerificationProgressScanner: 验证过程结束！");
+                        complete = true;
+                    }
+                }
+            }
+
+            //流程结束时，将调用次数上链
+            if (complete) {
+                recordDataSrcCallNum();
+                return;
+            }
+
+            //每2秒重查一次
+            try {
+                sleep(2000);
+            } catch (Exception e) {
+                LOGGER.error("VerificationProgressScanner sleep 出错了！");
+            }
+        }
+
+    }
+}

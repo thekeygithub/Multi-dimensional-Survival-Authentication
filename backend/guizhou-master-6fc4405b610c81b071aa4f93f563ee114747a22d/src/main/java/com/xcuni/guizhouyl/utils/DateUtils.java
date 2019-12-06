@@ -1,0 +1,81 @@
+package com.xcuni.guizhouyl.utils;
+
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
+public class DateUtils {
+
+    public static final DateTimeFormatter YEAR_MONTH_DAY_24H_M_S = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static final DateTimeFormatter YEAR_MONTH_DAY_12H_M_S = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+    public static final DateTimeFormatter YEAR_MONTH_DAY = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final DateTimeFormatter YEAR_MONTH = DateTimeFormatter.ofPattern("yyyy-MM");
+
+    /*
+     * 将时间转换为时间戳
+     */
+    public static String dateToStamp(String s) throws ParseException {
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = simpleDateFormat.parse(s);
+        long ts = date.getTime();
+        res = String.valueOf(ts);
+        return res;
+    }
+
+    public static Timestamp dateToTimeStamp(String s) throws ParseException {
+        String pattern;
+        if (s.contains("-"))
+            pattern = "yyyy-MM-dd";
+        else
+            pattern = "yyyy/MM/dd";
+        //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        Date date = simpleDateFormat.parse(s);
+        long ts = date.getTime();
+        return new Timestamp(ts);
+    }
+
+    public static String dateStringToDate(String s) throws ParseException {
+        String pattern;
+        if (s.contains("-"))
+            pattern = "yyyy-MM-dd";
+        else
+            pattern = "yyyy/MM/dd";
+        //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        Date date = simpleDateFormat.parse(s);
+
+        return simpleDateFormat.format(date);
+    }
+
+    /*
+     * 将时间戳转换为时间
+     */
+    public static String stampToDate(String s) {
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long lt = new Long(s);
+        Date date = new Date(lt);
+        res = simpleDateFormat.format(date);
+        return res;
+    }
+
+    public static String getRandomTimeStr() {
+        java.util.Random rand = new java.util.Random();
+        int month = rand.nextInt(6) + 5;
+        int day = rand.nextInt(28) + 1;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String dt = "2018-" + String.valueOf(month) + "-" + String.valueOf(day);
+        Date date = new Date();
+        try {
+            date = simpleDateFormat.parse(dt);
+        } catch (Exception e) {
+
+        }
+        return simpleDateFormat.format(date);
+
+    }
+}

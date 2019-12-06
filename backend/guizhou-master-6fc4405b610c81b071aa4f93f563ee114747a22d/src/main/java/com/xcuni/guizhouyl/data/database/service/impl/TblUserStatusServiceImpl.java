@@ -1,0 +1,61 @@
+package com.xcuni.guizhouyl.data.database.service.impl;
+
+import com.xcuni.guizhouyl.data.database.dao.BaseDao;
+import com.xcuni.guizhouyl.data.database.entity.TblUserStatusEntity;
+import com.xcuni.guizhouyl.data.database.service.TblUserStatusService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+@Service
+public class TblUserStatusServiceImpl implements TblUserStatusService {
+    final static Logger LOGGER = LoggerFactory.getLogger(TblUserStatusServiceImpl.class);
+    @Resource
+    private BaseDao baseDao;
+
+    @Override
+    public void insertUserStatus(TblUserStatusEntity entity) {
+
+        try {
+            baseDao.save(entity);
+        } catch (Exception e) {
+            LOGGER.error("insertUserStatus异常,{}", e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateUserStatus(TblUserStatusEntity entity) {
+        try {
+            baseDao.update(entity);
+        } catch (Exception e) {
+            LOGGER.error("updateUserStatus异常,{}", e.getMessage());
+        }
+    }
+
+    @Override
+    public TblUserStatusEntity getUserStatusEntityById(String userId) {
+        try {
+            TblUserStatusEntity entity = baseDao.findByID(userId, TblUserStatusEntity.class);
+            if (entity == null) {
+                LOGGER.debug("getUserStatusEntityById,未找到userId为{}的记录.", userId);
+            }
+            return entity;
+        } catch (Exception e) {
+            LOGGER.error("updateUserStatus异常,{}", e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteUserStatusData(String userId) {
+        try {
+            String sql = "DELETE FROM TBL_USER_STATUS WHERE user_id=" + "\"" + userId + "\"";
+            baseDao.getNameJdbc().getJdbcTemplate().execute(sql);
+        } catch (Exception e) {
+            LOGGER.error("deleteUserStatusData,{}", e.getMessage());
+        }
+    }
+
+}

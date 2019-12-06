@@ -1,0 +1,116 @@
+[
+  {
+    "DataSrc": "01",
+    "DataSrcName": "人社",
+    "DataList": [
+      {
+        "DataId": "01"
+      },
+      {
+        "DataId": "02"
+      },
+      {
+        "DataId": "03"
+      }
+    ]
+  },
+  {
+    "DataSrc": "02",
+    "DataSrcName": "医保",
+    "DataList": [
+      {
+        "DataId": "01"
+      },
+      {
+        "DataId": "02"
+      },
+      {
+        "DataId": "03"
+      }
+    ]
+  },
+  {
+    "DataSrc": "03",
+    "DataSrcName": "民政",
+    "DataList": [
+      {
+        "DataId": "01"
+      }
+    ]
+  },
+  {
+    "DataSrc": "04",
+    "DataSrcName": "公安",
+    "DataList": [
+      {
+        "DataId": "01"
+      },
+      {
+        "DataId": "02"
+      },
+      {
+        "DataId": "03"
+      },
+      {
+        "DataId": "04"
+      }
+    ]
+  },
+  {
+    "DataSrc": "05",
+    "DataSrcName": "卫健委",
+    "DataList": [
+      {
+        "DataId": "01"
+      },
+      {
+        "DataId": "02"
+      },
+      {
+        "DataId": "03"
+      }
+    ]
+  },
+  {
+    "DataSrc": "06",
+    "DataSrcName": "法院",
+    "DataList": [
+      {
+        "DataId": "01"
+      }
+    ]
+  },
+  {
+    "DataSrc": "07",
+    "DataSrcName": "交通",
+    "DataList": [
+      {
+        "DataId": "01"
+      }
+    ]
+  },
+  {
+    "DataSrc": "08",
+    "DataSrcName": "运营商",
+    "DataList": [
+      {
+        "DataId": "01"
+      },
+      {
+        "DataId": "02"
+      }
+    ]
+  },
+  {
+    "DataSrc": "09",
+    "DataSrcName": "银行",
+    "DataList": [
+      {
+        "DataId": "01"
+      },
+      {
+        "DataId": "02"
+      }
+    ]
+  }
+]

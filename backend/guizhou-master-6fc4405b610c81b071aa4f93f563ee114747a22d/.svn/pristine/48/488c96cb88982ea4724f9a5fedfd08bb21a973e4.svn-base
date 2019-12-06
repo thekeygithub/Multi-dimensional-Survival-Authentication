@@ -1,0 +1,560 @@
+---
+#
+# Copyright Fujitsu Australia Software Technology, IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+#
+# The network connection profile provides client applications the information about the target
+# blockchain network that are necessary for the applications to interact with it. These are all
+# knowledge that must be acquired from out-of-band sources. This file provides such a source.
+#
+name: "Network-Config-Guizhou-YL"
+
+#
+# Any properties with an "x-" prefix will be treated as application-specific, exactly like how naming
+# in HTTP headers or swagger properties work. The SDK will simply ignore these fields and leave
+# them for the applications to process. This is a mechanism for different components of an application
+# to exchange information that are not part of the standard schema described below. In particular,
+# the "x-type" property with the "hlfv1" value example below is used by Hyperledger Composer to
+# determine the type of Fabric networks (v0.6 vs. v1.0) it needs to work with.
+#
+x-type: "hlfv1"
+
+#
+# Describe what the target network is/does.
+#
+description: "The network used in the Guizhou yanglao"
+
+#
+# Schema version of the content. Used by the SDK to apply the corresponding parsing rules.
+#
+version: 1.0.0
+
+#
+# The client section is SDK-specific. The sample below is for the node.js SDK
+#
+client:
+  # Which organization does this application instance belong to? The value must be the name of an org
+  # defined under "organizations"
+  organization: Org1
+
+  # Some SDKs support pluggable KV stores, the properties under "credentialStore"
+  # are implementation specific
+  credentialStore:
+    # [Optional]. Specific to FileKeyValueStore.js or similar implementations in other SDKs. Can be others
+    # if using an alternative impl. For instance, CouchDBKeyValueStore.js would require an object
+    # here for properties like url, db name, etc.
+    path: "/tmp/hfc-kvs1"
+
+    # [Optional]. Specific to the CryptoSuite implementation. Software-based implementations like
+    # CryptoSuite_ECDSA_AES.js in node SDK requires a key store. PKCS#11 based implementations does
+    # not.
+    cryptoStore:
+      # Specific to the underlying KeyValueStore that backs the crypto key store.
+      path: "/tmp/hfc-cvs1"
+
+    # [Optional]. Specific to Composer environment
+    wallet: no-wallet-name
+
+#
+# [Optional]. But most apps would have this section so that channel objects can be constructed
+# based on the content below. If an app is creating channels, then it likely will not need this
+# section.
+# 在贵州项目一期，channel为提前设置
+channels:
+  # name of the channel
+  gzylchannel:
+    # Required. list of orderers designated by the application to use for transactions on this
+    # channel. This list can be a result of access control ("org1" can only access "ordererA"), or
+    # operational decisions to share loads from applications among the orderers.  The values must
+    # be "names" of orgs defined under "organizations/peers"
+    orderers:
+      - orderer0.guizhou.com
+
+    # Required. list of peers from participating orgs
+    peers:
+      peer0.org1.guizhou.com:
+        # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
+        # have the chaincode installed. The app can also use this property to decide which peers
+        # to send the chaincode install request. Default: true
+        endorsingPeer: true
+
+        # [Optional]. will this peer be sent query proposals? The peer must have the chaincode
+        # installed. The app can also use this property to decide which peers to send the
+        # chaincode install request. Default: true
+        chaincodeQuery: true
+
+        # [Optional]. will this peer be sent query proposals that do not require chaincodes, like
+        # queryBlock(), queryTransaction(), etc. Default: true
+        ledgerQuery: true
+
+        # [Optional]. will this peer be the target of the SDK's listener registration? All peers can
+        # produce events but the app typically only needs to connect to one to listen to events.
+        # Default: true
+        eventSource: true
+
+      peer1.org1.guizhou.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.org2.guizhou.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: false
+
+      peer1.org2.guizhou.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: false
+        
+      peer0.org3.guizhou.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: false
+
+      peer1.org3.guizhou.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: false        
+
+    # [Optional]. what chaincodes are expected to exist on this channel? The application can use
+    # this information to validate that the target peers are in the expected state by comparing
+    # this list with the query results of getInstalledChaincodes() and getInstantiatedChaincodes()
+    chaincodes:
+      # the format follows the "cannonical name" of chaincodes by fabric code
+      #- example02:v1
+      #- marbles:1.0
+      - mycc:v1.0
+      - recordCC:v1.0
+      - modelCC:v1.0
+      - queryCC:v1.0
+
+#
+# list of participating organizations in this network
+#
+organizations:
+  Org1:
+    mspid: Org1MSP
+
+    peers:
+      - peer0.org1.guizhou.com
+      - peer1.org1.guizhou.com
+
+    # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
+    # network. Typically certificates provisioning is done in a separate process outside of the
+    # runtime network. Fabric-CA is a special certificate authority that provides a REST APIs for
+    # dynamic certificate management (enroll, revoke, re-enroll). The following section is only for
+    # Fabric-CA servers.
+    #certificateAuthorities:
+     # - ca-org1
+
+    # [Optional]. If the application is going to make requests that are reserved to organization
+    # administrators, including creating/updating channels, installing/instantiating chaincodes, it
+    # must have access to the admin identity represented by the private key and signing certificate.
+    # Both properties can be the PEM string or local path to the PEM file. Note that this is mainly for
+    # convenience in development mode, production systems should not expose sensitive information
+    # this way. The SDK should allow applications to set the org admin identity via APIs, and only use
+    # this route as an alternative when it exists.
+    adminPrivateKey:
+      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org1.guizhou.com/users/Admin@org1.guizhou.com/msp/keystore/6b32e59640c594cf633ad8c64b5958ef7e5ba2a205cfeefd44a9e982ce624d93_sk
+      pem: |
+        -----BEGIN PRIVATE KEY-----
+        MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg7mcX25k2U4EbfApC
+        EG5f5TPBXsPmhHTlGWYU8yGpiz2hRANCAATLQUMeTHHRAL420Y8NJ2UNbW79snwU
+        C3KS7L/zOKNP4q8o+/jhEuwvewlMYCZGeVmViiTPd650OfYO2MxxpY0l
+        -----END PRIVATE KEY-----
+
+
+
+    signedCert:
+      #path: classpath:config/crypto-config/peerOrganizations/org1.guizhou.com/users/Admin@org1.guizhou.com/msp/signcerts/Admin@org1.guizhou.com-cert.pem
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICGDCCAb6gAwIBAgIQXX0zNRQKCqF8t6+D+qxSdDAKBggqhkjOPQQDAjBqMQsw
+        CQYDVQQGEwJDTjEQMA4GA1UECBMHR3VpemhvdTEQMA4GA1UEBxMHR3VpeWFuZzEZ
+        MBcGA1UEChMQb3JnMS5ndWl6aG91LmNvbTEcMBoGA1UEAxMTY2Eub3JnMS5ndWl6
+        aG91LmNvbTAeFw0xODExMjEwNzMyNThaFw0yODExMTgwNzMyNThaMGMxCzAJBgNV
+        BAYTAkNOMRAwDgYDVQQIEwdHdWl6aG91MRAwDgYDVQQHEwdHdWl5YW5nMQ8wDQYD
+        VQQLEwZjbGllbnQxHzAdBgNVBAMMFkFkbWluQG9yZzEuZ3VpemhvdS5jb20wWTAT
+        BgcqhkjOPQIBBggqhkjOPQMBBwNCAATLQUMeTHHRAL420Y8NJ2UNbW79snwUC3KS
+        7L/zOKNP4q8o+/jhEuwvewlMYCZGeVmViiTPd650OfYO2MxxpY0lo00wSzAOBgNV
+        HQ8BAf8EBAMCB4AwDAYDVR0TAQH/BAIwADArBgNVHSMEJDAigCCpt7o7Dcu4eAAT
+        IgEoNne6jaEl2s175etuuxnajM81kTAKBggqhkjOPQQDAgNIADBFAiEAu0vzu/1X
+        gcAQgPT2+xWqcnSEjERNpzUb/yrdPFjSJv8CIHT9IKvy+H6K+4L4QBlybJ3K++VT
+        hfKAJeZk35JZzCmv
+        -----END CERTIFICATE-----
+
+
+
+
+  # the profile will contain public information about organizations other than the one it belongs to.
+  # These are necessary information to make transaction lifecycles work, including MSP IDs and
+  # peers with a public URL to send transaction proposals. The file will not contain private
+  # information reserved for members of the organization, such as admin key and certificate,
+  # fabric-ca registrar enroll ID and secret, etc.
+  Org2:
+    mspid: Org2MSP
+    peers:
+      - peer0.org2.guizhou.com
+      - peer1.org2.guizhou.com
+    #certificateAuthorities:
+    #      - ca-org2
+    adminPrivateKey:
+      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org1.guizhou.com/users/Admin@org1.guizhou.com/msp/keystore/6b32e59640c594cf633ad8c64b5958ef7e5ba2a205cfeefd44a9e982ce624d93_sk
+      pem: |
+        -----BEGIN PRIVATE KEY-----
+        MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgXphTPEl8wCLXIMD0
+        jJD6Ogw+rZsB0hV1XHnLkiIl1PqhRANCAAQKf+j77FV7AU2pi99DrEVkzr2wl0Mw
+        Umr7pW6uyfbmH1KP9HxH5RC27yvIyRYx2Sl9WamKaOULw3vxYu9PYIgb
+        -----END PRIVATE KEY-----
+
+
+    signedCert:
+      #path: classpath:config/crypto-config/peerOrganizations/org1.guizhou.com/users/Admin@org1.guizhou.com/msp/signcerts/Admin@org1.guizhou.com-cert.pem
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICGDCCAb6gAwIBAgIQDsQplE2l1nZffbgVAEqBUzAKBggqhkjOPQQDAjBqMQsw
+        CQYDVQQGEwJDTjEQMA4GA1UECBMHR3VpemhvdTEQMA4GA1UEBxMHR3VpeWFuZzEZ
+        MBcGA1UEChMQb3JnMi5ndWl6aG91LmNvbTEcMBoGA1UEAxMTY2Eub3JnMi5ndWl6
+        aG91LmNvbTAeFw0xODExMjEwNzMyNThaFw0yODExMTgwNzMyNThaMGMxCzAJBgNV
+        BAYTAkNOMRAwDgYDVQQIEwdHdWl6aG91MRAwDgYDVQQHEwdHdWl5YW5nMQ8wDQYD
+        VQQLEwZjbGllbnQxHzAdBgNVBAMMFkFkbWluQG9yZzIuZ3VpemhvdS5jb20wWTAT
+        BgcqhkjOPQIBBggqhkjOPQMBBwNCAAQKf+j77FV7AU2pi99DrEVkzr2wl0MwUmr7
+        pW6uyfbmH1KP9HxH5RC27yvIyRYx2Sl9WamKaOULw3vxYu9PYIgbo00wSzAOBgNV
+        HQ8BAf8EBAMCB4AwDAYDVR0TAQH/BAIwADArBgNVHSMEJDAigCCrHw88lvSVUYJ/
+        Bap+tDKsS0RW/rdBNNZLf9k4EkrCbTAKBggqhkjOPQQDAgNIADBFAiEApl4GQZiN
+        p/1mMwGuRVH/d5PdLGwupXW37jb2Vw4MaoUCIHpYKghn50J+5vH+LmvS8EfQLSuB
+        8YMqK5nWidN4CHn7
+        -----END CERTIFICATE-----
+
+    
+    
+  Org3:
+    mspid: Org3MSP
+    peers:
+      - peer0.org3.guizhou.com
+      - peer1.org3.guizhou.com
+    #certificateAuthorities:
+    #      - ca-org2   
+    adminPrivateKey:
+      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org1.guizhou.com/users/Admin@org1.guizhou.com/msp/keystore/6b32e59640c594cf633ad8c64b5958ef7e5ba2a205cfeefd44a9e982ce624d93_sk
+      pem: |
+        -----BEGIN PRIVATE KEY-----
+        MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgd/1rKcK4KOYuryb/
+        +QDm36qg/+WORJg41/fcxoEjfM+hRANCAATawYxT3IlX9rGsNPJtH5UC9u2iUmao
+        aqzEVSt8FV9hm0DU5C9GPoqh9wDcBWLTy0/ctiX6Y12b74hr2SM1Ohlq
+        -----END PRIVATE KEY-----
+
+
+    signedCert:
+      #path: classpath:config/crypto-config/peerOrganizations/org1.guizhou.com/users/Admin@org1.guizhou.com/msp/signcerts/Admin@org1.guizhou.com-cert.pem
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICGDCCAb6gAwIBAgIQLvo93Gd2ZMs+ByCGzfPqxjAKBggqhkjOPQQDAjBqMQsw
+        CQYDVQQGEwJDTjEQMA4GA1UECBMHR3VpemhvdTEQMA4GA1UEBxMHR3VpeWFuZzEZ
+        MBcGA1UEChMQb3JnMy5ndWl6aG91LmNvbTEcMBoGA1UEAxMTY2Eub3JnMy5ndWl6
+        aG91LmNvbTAeFw0xODExMjEwNzMyNThaFw0yODExMTgwNzMyNThaMGMxCzAJBgNV
+        BAYTAkNOMRAwDgYDVQQIEwdHdWl6aG91MRAwDgYDVQQHEwdHdWl5YW5nMQ8wDQYD
+        VQQLEwZjbGllbnQxHzAdBgNVBAMMFkFkbWluQG9yZzMuZ3VpemhvdS5jb20wWTAT
+        BgcqhkjOPQIBBggqhkjOPQMBBwNCAATawYxT3IlX9rGsNPJtH5UC9u2iUmaoaqzE
+        VSt8FV9hm0DU5C9GPoqh9wDcBWLTy0/ctiX6Y12b74hr2SM1Ohlqo00wSzAOBgNV
+        HQ8BAf8EBAMCB4AwDAYDVR0TAQH/BAIwADArBgNVHSMEJDAigCDLkLVWTeNtdog+
+        gxCZekNA1SM5yOmyB+vSHG6sYn3FtTAKBggqhkjOPQQDAgNIADBFAiEAy8mwocUx
+        bJRDrit8wt7EPyYn6y5izxhxiG2IsDv/h88CIEX2F6OEYeQfUADR+MZ8xnaiF4kj
+        WwN77G9v1oPPoQy7
+        -----END CERTIFICATE-----
+
+    
+#
+# List of orderers to send transaction and channel create/update requests to. For the time
+# being only one orderer is needed. If more than one is defined, which one get used by the
+# SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
+#
+orderers:
+  orderer0.guizhou.com:
+    url: grpcs://orderer0.guizhou.com:7050
+
+    # these are standard properties defined by the gRPC library
+    # they will be passed in as-is to gRPC client constructor
+    grpcOptions:
+#      ssl-target-name-override: orderer.guizhou.com
+      hostnameOverride: orderer0.guizhou.com
+      grpc-max-send-message-length: 15
+      grpc.keepalive_time_ms: 360000
+      grpc.keepalive_timeout_ms: 180000
+
+    # src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/ordererOrganizations/guizhou.com/tlsca
+    tlsCACerts:
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICIzCCAcqgAwIBAgIRAICl6CFmGUpmUAgClZ6sdkEwCgYIKoZIzj0EAwIwYzEL
+        MAkGA1UEBhMCQ04xEDAOBgNVBAgTB0d1aXpob3UxEDAOBgNVBAcTB0d1aXlhbmcx
+        FDASBgNVBAoTC2d1aXpob3UuY29tMRowGAYDVQQDExF0bHNjYS5ndWl6aG91LmNv
+        bTAeFw0xODExMjEwNzMyNThaFw0yODExMTgwNzMyNThaMGMxCzAJBgNVBAYTAkNO
+        MRAwDgYDVQQIEwdHdWl6aG91MRAwDgYDVQQHEwdHdWl5YW5nMRQwEgYDVQQKEwtn
+        dWl6aG91LmNvbTEaMBgGA1UEAxMRdGxzY2EuZ3VpemhvdS5jb20wWTATBgcqhkjO
+        PQIBBggqhkjOPQMBBwNCAARJCTDfvWKyNfpkPVkWyYUPi6n7gyWSPipAHuK85nBW
+        K/9jP9zaCmqNezeL9yY3VtO2dtOTPFUFjnqDhwEb4etwo18wXTAOBgNVHQ8BAf8E
+        BAMCAaYwDwYDVR0lBAgwBgYEVR0lADAPBgNVHRMBAf8EBTADAQH/MCkGA1UdDgQi
+        BCBkojPjHzhdqGS/m2SSBzyNMsg/YZBZihsikj3KTfb/UDAKBggqhkjOPQQDAgNH
+        ADBEAiBe7GTK6ZcLJGCAqF21+s4VKnLexPJ051rDJtxMs9doFQIgc0nlAVwyVPUx
+        sA/+C/99xB9KSSo0rSHCItRDAWQPjkw=
+        -----END CERTIFICATE-----
+
+
+
+#
+# List of peers to send various requests to, including endorsement, query
+# and event listener registration.
+#
+peers:
+  peer0.org1.guizhou.com:
+    # this URL is used to send endorsement and query requests
+    url: grpcs://peer0.org1.guizhou.com:7051
+
+    # this URL is used to connect the EventHub and registering event listeners
+    eventUrl: grpcs://peer0.org1.guizhou.com:7053
+
+    grpcOptions:
+      #ssl-target-name-override: peer0.org1.guizhou.com
+      grpc.http2.keepalive_time: 15
+      hostnameOverride: peer0.org1.guizhou.com
+      # TODO: The following causes a NoSuchMethodException to be thrown when sending proposals to the peer...
+      # grpc.NettyChannelBuilderOption.maxInboundMessageSize: 9000000
+
+    tlsCACerts:
+     #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org1.guizhou.com/peers/peer0.org1.guizhou.com/tls/server.crt
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICVTCCAfugAwIBAgIQAOdRwS2w08rDNsD+7DZRfzAKBggqhkjOPQQDAjBtMQsw
+        CQYDVQQGEwJDTjEQMA4GA1UECBMHR3VpemhvdTEQMA4GA1UEBxMHR3VpeWFuZzEZ
+        MBcGA1UEChMQb3JnMS5ndWl6aG91LmNvbTEfMB0GA1UEAxMWdGxzY2Eub3JnMS5n
+        dWl6aG91LmNvbTAeFw0xODExMjEwNzMyNThaFw0yODExMTgwNzMyNThaMFIxCzAJ
+        BgNVBAYTAkNOMRAwDgYDVQQIEwdHdWl6aG91MRAwDgYDVQQHEwdHdWl5YW5nMR8w
+        HQYDVQQDExZwZWVyMC5vcmcxLmd1aXpob3UuY29tMFkwEwYHKoZIzj0CAQYIKoZI
+        zj0DAQcDQgAEYaozVnW83tuUrYSxPD07Of2U9xNmwHelqOpM3AKi84+ML/eBMQMl
+        1mZ4NUVVruC1oPzlM03TNpdl6H1IsR7MdqOBlzCBlDAOBgNVHQ8BAf8EBAMCBaAw
+        HQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB/wQCMAAwKwYD
+        VR0jBCQwIoAg0iZCKwQEJJi3b+wt2+T3nZAyi7z4niHa7LGmFuvtcOAwKAYDVR0R
+        BCEwH4IWcGVlcjAub3JnMS5ndWl6aG91LmNvbYIFcGVlcjAwCgYIKoZIzj0EAwID
+        SAAwRQIhAOiuy1e8iIlbeW4WZuGFzW4UHOYE5REeeulIF78B4TBfAiB2lM9Wg1er
+        WF4d81YQDSyStOUBV6Q4cWqEeDx6jIsbHw==
+        -----END CERTIFICATE-----
+
+
+
+
+  peer1.org1.guizhou.com:
+    url: grpcs://peer1.org1.guizhou.com:8051
+    eventUrl: grpcs://peer1.org1.guizhou.com:8053
+
+    grpcOptions:
+      #ssl-target-name-override: peer0.org1.guizhou.com
+      grpc.http2.keepalive_time: 15
+     # negotiationType: TLS  ### purposely commented out to verify these are the defaults
+     # sslProvider: openSSL
+      hostnameOverride: peer1.org1.guizhou.com
+
+    tlsCACerts:
+      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org1.guizhou.com/peers/peer1.org1.guizhou.com/tls/server.crt
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICVjCCAfygAwIBAgIRAI/aApI4ve+gTmvz+VhlO2owCgYIKoZIzj0EAwIwbTEL
+        MAkGA1UEBhMCQ04xEDAOBgNVBAgTB0d1aXpob3UxEDAOBgNVBAcTB0d1aXlhbmcx
+        GTAXBgNVBAoTEG9yZzEuZ3VpemhvdS5jb20xHzAdBgNVBAMTFnRsc2NhLm9yZzEu
+        Z3VpemhvdS5jb20wHhcNMTgxMTIxMDczMjU4WhcNMjgxMTE4MDczMjU4WjBSMQsw
+        CQYDVQQGEwJDTjEQMA4GA1UECBMHR3VpemhvdTEQMA4GA1UEBxMHR3VpeWFuZzEf
+        MB0GA1UEAxMWcGVlcjEub3JnMS5ndWl6aG91LmNvbTBZMBMGByqGSM49AgEGCCqG
+        SM49AwEHA0IABJ+OdMNF9AdyegB5ogMWv98kmTK+EGfj/g8hrT69O0OuIpumcYEl
+        J8yZGKtFuM7uhcx5oRTZcyomGP2UO5zldgSjgZcwgZQwDgYDVR0PAQH/BAQDAgWg
+        MB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMCsG
+        A1UdIwQkMCKAINImQisEBCSYt2/sLdvk952QMou8+J4h2uyxphbr7XDgMCgGA1Ud
+        EQQhMB+CFnBlZXIxLm9yZzEuZ3VpemhvdS5jb22CBXBlZXIxMAoGCCqGSM49BAMC
+        A0gAMEUCIQDxBhamixSw1oxHtL2Kxg47NZwc2wgvT21PzEWLlnmkzgIgfYPTS9Ll
+        tejdiLSIMh+shHeZY4Q821AvxV8fC4EN6Do=
+        -----END CERTIFICATE-----
+
+
+
+  peer0.org2.guizhou.com:
+    url: grpcs://peer0.org2.guizhou.com:7051
+#如果本文件是给org1使用，请一定不要配置org2的eventUrl，否则会有连接eventhub超时的异常！
+#    eventUrl: grpcs://peer0.org2.guizhou.com:9053
+    grpcOptions:
+#      ssl-target-name-override: peer0.org2.guizhou.com
+#      negotiationType: TLS
+#      grpc.NettyChannelBuilderOption.maxInboundMessageSize: 9000000
+#      sslProvider: openSSL
+      hostnameOverride: peer0.org2.guizhou.com
+
+    tlsCACerts:
+      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org2.guizhou.com/peers/peer0.org2.guizhou.com/tls/server.crt
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICVTCCAfygAwIBAgIRAPkinF6/txXqQtSI/QRf7NQwCgYIKoZIzj0EAwIwbTEL
+        MAkGA1UEBhMCQ04xEDAOBgNVBAgTB0d1aXpob3UxEDAOBgNVBAcTB0d1aXlhbmcx
+        GTAXBgNVBAoTEG9yZzIuZ3VpemhvdS5jb20xHzAdBgNVBAMTFnRsc2NhLm9yZzIu
+        Z3VpemhvdS5jb20wHhcNMTgxMTIxMDczMjU4WhcNMjgxMTE4MDczMjU4WjBSMQsw
+        CQYDVQQGEwJDTjEQMA4GA1UECBMHR3VpemhvdTEQMA4GA1UEBxMHR3VpeWFuZzEf
+        MB0GA1UEAxMWcGVlcjAub3JnMi5ndWl6aG91LmNvbTBZMBMGByqGSM49AgEGCCqG
+        SM49AwEHA0IABLb7fuEqW2WAC0377w0hEuOjhaVffmhyUHjk7tBohg2g6QZgkVSP
+        T2u/M8yItf4zHrV/7twOw/YxgkM87byj70mjgZcwgZQwDgYDVR0PAQH/BAQDAgWg
+        MB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMCsG
+        A1UdIwQkMCKAIAyMbriZrtsFcv/ZEGHPYhtVWFkA624ij4pSWM2zOn2VMCgGA1Ud
+        EQQhMB+CFnBlZXIwLm9yZzIuZ3VpemhvdS5jb22CBXBlZXIwMAoGCCqGSM49BAMC
+        A0cAMEQCIFudI5g43CeubOuUWbUNPTKvKlPC+TL78poxGjd6KpLiAiBR6ZN6Z0+h
+        gRvyiXSFGjuZd+Pk78Fpq/c2xrUM/rkEew==
+        -----END CERTIFICATE-----
+
+
+
+
+  peer1.org2.guizhou.com:
+    url: grpcs://peer1.org2.guizhou.com:8051
+#    eventUrl: grpcs://peer1.org2.guizhou.com:10053
+    grpcOptions:
+      #      ssl-target-name-override: peer0.org2.guizhou.com
+      #      negotiationType: TLS
+      #      grpc.NettyChannelBuilderOption.maxInboundMessageSize: 9000000
+      #      sslProvider: openSSL
+      hostnameOverride: peer1.org2.guizhou.com
+
+    tlsCACerts:
+      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org2.guizhou.com/peers/peer1.org2.guizhou.com/tls/server.crt
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICVTCCAfugAwIBAgIQbcUkbDPW10jZY14vfW/gpjAKBggqhkjOPQQDAjBtMQsw
+        CQYDVQQGEwJDTjEQMA4GA1UECBMHR3VpemhvdTEQMA4GA1UEBxMHR3VpeWFuZzEZ
+        MBcGA1UEChMQb3JnMi5ndWl6aG91LmNvbTEfMB0GA1UEAxMWdGxzY2Eub3JnMi5n
+        dWl6aG91LmNvbTAeFw0xODExMjEwNzMyNThaFw0yODExMTgwNzMyNThaMFIxCzAJ
+        BgNVBAYTAkNOMRAwDgYDVQQIEwdHdWl6aG91MRAwDgYDVQQHEwdHdWl5YW5nMR8w
+        HQYDVQQDExZwZWVyMS5vcmcyLmd1aXpob3UuY29tMFkwEwYHKoZIzj0CAQYIKoZI
+        zj0DAQcDQgAEImvM0LHf3ed8iEJ107HZbDDWhT3h8bUfu/nBn8qd36O83YGUDqtM
+        7PH/Qcr6ZxdtUFUo1FQDUlMpc+KpXFFPOaOBlzCBlDAOBgNVHQ8BAf8EBAMCBaAw
+        HQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB/wQCMAAwKwYD
+        VR0jBCQwIoAgDIxuuJmu2wVy/9kQYc9iG1VYWQDrbiKPilJYzbM6fZUwKAYDVR0R
+        BCEwH4IWcGVlcjEub3JnMi5ndWl6aG91LmNvbYIFcGVlcjEwCgYIKoZIzj0EAwID
+        SAAwRQIhAPz9VT4XR8dyFzStWncddxDsGqOoOWHiQuT4yySVnncjAiAsmFHiub1m
+        EXMw47IK0OhK0hIhGBMX33XEYhd2ZO1gug==
+        -----END CERTIFICATE-----
+
+
+
+  peer0.org3.guizhou.com:
+    url: grpcs://peer0.org3.guizhou.com:7051
+#如果本文件是给org1使用，请一定不要配置org2的eventUrl，否则会有连接eventhub超时的异常！
+#    eventUrl: grpcs://peer0.org2.guizhou.com:9053
+    grpcOptions:
+#      ssl-target-name-override: peer0.org2.guizhou.com
+#      negotiationType: TLS
+#      grpc.NettyChannelBuilderOption.maxInboundMessageSize: 9000000
+#      sslProvider: openSSL
+      hostnameOverride: peer0.org3.guizhou.com
+
+    tlsCACerts:
+      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org3.guizhou.com/peers/peer0.org3.guizhou.com/tls/server.crt
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICVTCCAfugAwIBAgIQK7XaM64wy4/4pG0qiGJykjAKBggqhkjOPQQDAjBtMQsw
+        CQYDVQQGEwJDTjEQMA4GA1UECBMHR3VpemhvdTEQMA4GA1UEBxMHR3VpeWFuZzEZ
+        MBcGA1UEChMQb3JnMy5ndWl6aG91LmNvbTEfMB0GA1UEAxMWdGxzY2Eub3JnMy5n
+        dWl6aG91LmNvbTAeFw0xODExMjEwNzMyNThaFw0yODExMTgwNzMyNThaMFIxCzAJ
+        BgNVBAYTAkNOMRAwDgYDVQQIEwdHdWl6aG91MRAwDgYDVQQHEwdHdWl5YW5nMR8w
+        HQYDVQQDExZwZWVyMC5vcmczLmd1aXpob3UuY29tMFkwEwYHKoZIzj0CAQYIKoZI
+        zj0DAQcDQgAEuqU2iM3JhbUFS1vqrnqPPkMxufasjOKkX443zjajS9BOWLpzVpjV
+        +Pbnmu+HyLuraSGTfBtVGINsAWeEI6UBJqOBlzCBlDAOBgNVHQ8BAf8EBAMCBaAw
+        HQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB/wQCMAAwKwYD
+        VR0jBCQwIoAglZiFjQ8kFtc8iTClGuLOCPOmYzwBmTupSkEvHaUZp5cwKAYDVR0R
+        BCEwH4IWcGVlcjAub3JnMy5ndWl6aG91LmNvbYIFcGVlcjAwCgYIKoZIzj0EAwID
+        SAAwRQIhAN18fsjs8SqdKCz7WXj+54MFWTl0mWzicOJczZTs++XXAiAbnr04hjPh
+        JItYIIykCJx8AQFbjwIUXqkGUdU3p+5oyQ==
+        -----END CERTIFICATE-----
+
+
+  peer1.org3.guizhou.com:
+    url: grpcs://peer1.org3.guizhou.com:8051
+#    eventUrl: grpcs://peer1.org2.guizhou.com:10053
+    grpcOptions:
+      #      ssl-target-name-override: peer0.org2.guizhou.com
+      #      negotiationType: TLS
+      #      grpc.NettyChannelBuilderOption.maxInboundMessageSize: 9000000
+      #      sslProvider: openSSL
+      hostnameOverride: peer1.org3.guizhou.com
+
+    tlsCACerts:
+      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org2.guizhou.com/peers/peer1.org3.guizhou.com/tls/server.crt
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICVTCCAfygAwIBAgIRAIC9sftcHN5n6/D7zcYsrFswCgYIKoZIzj0EAwIwbTEL
+        MAkGA1UEBhMCQ04xEDAOBgNVBAgTB0d1aXpob3UxEDAOBgNVBAcTB0d1aXlhbmcx
+        GTAXBgNVBAoTEG9yZzMuZ3VpemhvdS5jb20xHzAdBgNVBAMTFnRsc2NhLm9yZzMu
+        Z3VpemhvdS5jb20wHhcNMTgxMTIxMDczMjU4WhcNMjgxMTE4MDczMjU4WjBSMQsw
+        CQYDVQQGEwJDTjEQMA4GA1UECBMHR3VpemhvdTEQMA4GA1UEBxMHR3VpeWFuZzEf
+        MB0GA1UEAxMWcGVlcjEub3JnMy5ndWl6aG91LmNvbTBZMBMGByqGSM49AgEGCCqG
+        SM49AwEHA0IABH4lXjPu/ziMhjdL9E1eKRFPUOUy7k8egYqIIB7OUOZ3HuV3/1ve
+        Bo9PNCMlNsc3GFRlE/qWItwYm1Wq9lNI9f6jgZcwgZQwDgYDVR0PAQH/BAQDAgWg
+        MB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMCsG
+        A1UdIwQkMCKAIJWYhY0PJBbXPIkwpRrizgjzpmM8AZk7qUpBLx2lGaeXMCgGA1Ud
+        EQQhMB+CFnBlZXIxLm9yZzMuZ3VpemhvdS5jb22CBXBlZXIxMAoGCCqGSM49BAMC
+        A0cAMEQCIEdM2dv1ntN2gnbyOp5Dzxj3MArxEWGULtNVFgr+wF4aAiA4BmPBYHq8
+        tJ4XZU83rscKveuN39aiaP2YhNuSiDizYw==
+        -----END CERTIFICATE-----
+            
+#
+# Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
+# certificate management to be done via REST APIs. Application may choose to use a standard
+# Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
+#
+#certificateAuthorities:
+#  ca-org1:
+#    url: https://localhost:7054
+    # the properties specified under this object are passed to the 'http' client verbatim when
+    # making the request to the Fabric-CA server
+ #   httpOptions:
+  #    verify: false #must be false for testing env.
+
+    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+    # needed to enroll and invoke new users.
+  #  registrar: #single entitiy
+  #    enrollId: admin
+  #    enrollSecret: adminpw
+    # [Optional] The optional name of the CA.
+  #  caName: ca0
+
+  #  tlsCACerts:
+      # Comma-Separated list of paths
+  #    path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org1.guizhou.com/ca/ca.org1.guizhou.com-cert.pem
+
+      # Client key and cert for TLS mutual auth with Fabric CA. If the target Fabric CA server
+      # does not have TLS mutual auth turned on, then this section is not needed
+   #   client:
+    #    keyfile: path/to/tls/fabricca/certs/client/client_fabric_client-key.pem
+    #    certfile: path/to/tls/fabricca/certs/client/client_fabric_client.pem
+  #ca-org2:
+   # url: https://localhost:8054
+      # the properties specified under this object are passed to the 'http' client verbatim when
+      # making the request to the Fabric-CA server
+    #httpOptions:
+    #  verify: false #must be no for testing env.
+    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+    # needed to enroll and invoke new users.
+   # registrar: # as an array.
+    #  -  enrollId: admin
+     #    enrollSecret: adminpw
+   # tlsCACerts:
+      # Comma-Separated list of paths
+    #  path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org2.guizhou.com/ca/ca.org2.guizhou.com-cert.pem
+
+      # Client key and cert for TLS mutual auth with Fabric CA. If the target Fabric CA server
+      # does not have TLS mutual auth turned on, then this section is not needed
+    #  client:
+    #    keyfile: path/to/tls/fabricca/certs/client/client_fabric_client-key.pem
+    #    certfile: path/to/tls/fabricca/certs/client/client_fabric_client.pem
+

@@ -1,0 +1,97 @@
+package com.xcuni.guizhouyl.config;
+
+import com.fuliang.hyperledger.fabric.sdk.config.SdkConfiguration;
+import com.fuliang.hyperledger.fabric.sdk.model.Organization;
+import lombok.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
+
+import java.io.File;
+import java.lang.reflect.Field;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.util.Collection;
+
+@Data
+@Component
+public class ConfigurationManager {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(ConfigurationManager.class);
+    public SdkConfiguration sdkConfiguration = SdkConfiguration.getConfig();
+    ;
+    @Autowired
+    private FabricAppData fabricAppData;
+    private String fabricConfigRoot;
+    private String fabricVersion;
+
+    public ConfigurationManager() {
+    }
+
+    private String getNetworkConfigDir() {
+        fabricConfigRoot = fabricAppData.getFabricConfigRootDir();
+        fabricVersion = fabricAppData.getFabricVersion();
+        return fabricConfigRoot + "/" + fabricVersion + fabricAppData.getFabricNetworkConfig();
+    }
+
+    private File getNetworkConfigYamlFile() {
+        try {
+            String configFilePath = getNetworkConfigDir();
+            boolean runningTLS = fabricAppData.isFabricRunningTls();
+            String fileName = runningTLS ? "network-config-tls.yaml" : "network-config.yaml";//
+            String filePath = configFilePath + fileName;
+            URL url = ResourceUtils.getURL(filePath);
+            LOGGER.info("Fabric网络配置文件路径:{}", url.toString());
+            if (ResourceUtils.isFileURL(url)) {
+                return ResourceUtils.getFile(url);
+            }
+        } catch (Exception e) {
+            LOGGER.error("获取网络配置文件异常： {}", e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * load network config.
+     */
+    public void loadNetworkConfiguration() {
+
+        try {
+            File yamlFile = getNetworkConfigYamlFile();
+            if (yamlFile == null || !yamlFile.exists()) {
+                LOGGER.error("未找到Fabric网络配置文件!");
+                throw new RuntimeException("网络配置文件不存在！");
+            }
+            sdkConfiguration.loadNetworkConfig(yamlFile);
+        } catch (Exception e) {
+            throw new RuntimeException("初始化网络配置失败！", e);
+        }
+
+    }
+
+    public void setSdkConfigProperties() {
+        if (sdkConfiguration == null) {
+            LOGGER.error("SdkConfiguration is null!");
+            return;
+        }
+
+
+        //sdkConfiguration
+    }
+
+    public Collection<Organization> getOrgnizations() {
+        return sdkConfiguration.getOrganizations();
+    }
+
+    public String getClientOrgName() {
+        return sdkConfiguration.getClientOrgnization();
+    }
+
+    public void setOrgPeerAdmin() {
+
+    }
+
+
+}

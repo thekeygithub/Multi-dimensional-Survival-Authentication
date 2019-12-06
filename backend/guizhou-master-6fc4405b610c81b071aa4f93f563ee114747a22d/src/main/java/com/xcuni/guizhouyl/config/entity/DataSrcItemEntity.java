@@ -1,0 +1,27 @@
+package com.xcuni.guizhouyl.config.entity;
+
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Data
+public class DataSrcItemEntity {
+    private String dataId;
+    private String dataName;
+    private List<DataSrcItemResultEntity> resultEnum = new ArrayList<>();
+    //Build from json config
+    private Map<String, String> resultMap = new HashMap<>();
+
+    public void addToResultMap(String id, String desc) {
+        resultMap.put(id, desc);
+    }
+
+    public String getResultDescById(String id) {
+        if (resultMap.containsKey(id))
+            return resultMap.get(id);
+        return null;
+    }
+}

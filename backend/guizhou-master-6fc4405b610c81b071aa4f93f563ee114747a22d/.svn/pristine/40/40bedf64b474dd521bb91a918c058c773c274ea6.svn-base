@@ -1,0 +1,168 @@
+package com.xcuni.guizhouyl;
+
+import com.xcuni.guizhouyl.config.YanglaoAppData;
+import com.xcuni.guizhouyl.data.service.DataDictService;
+import com.xcuni.guizhouyl.config.RedisConfig;
+import com.xcuni.guizhouyl.data.RedisClient;
+import com.xcuni.guizhouyl.data.database.service.YanglaoDbOperation;
+import com.xcuni.guizhouyl.fabric.FabricManager;
+import com.xcuni.guizhouyl.rest.controller.YanglaoAppController;
+import com.xcuni.guizhouyl.data.service.DataPlatformService;
+import com.xcuni.guizhouyl.data.service.RedisKeyService;
+import com.xcuni.guizhouyl.rest.thread.ConsumerExecutorManager;
+import com.xcuni.guizhouyl.rest.thread.FetchUserDataManagerRunner;
+import com.xcuni.guizhouyl.rest.thread.ProducerExecutorManager;
+import com.xcuni.guizhouyl.rest.thread.VerificationManagerRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+@Component
+@Order(value = 1)
+public class ApplicationSetup implements ApplicationRunner {
+
+    final static Logger LOGGER = LoggerFactory.getLogger(ApplicationSetup.class);
+    @Autowired
+    RedisConfig redisConfig;
+    @Autowired
+    YanglaoAppData yanglaoAppData;
+    @Autowired
+    DataDictService dataDictService;
+    @Autowired
+    DataPlatformService dataPlatformService;
+    @Autowired
+    RedisKeyService redisKeyService;
+    @Autowired
+    YanglaoDbOperation yanglaoDbOperation;
+    @Autowired
+    FabricManager fabricManager;
+
+    final public static int YANGLAO_APP_INTEGRATED =0;
+    final public static int YANGLAO_APP_PRODUCER =1;
+    final public static int YANGLAO_APP_CONSUMER =2;
+
+    @Value("${spring.datasource.name}")
+    private String dbName;
+    @Value("${spring.datasource.url}")
+    private String dbUrl;
+    @Value("${spring.datasource.username}")
+    private String dbUsername;
+    @Value("${spring.datasource.password}")
+    private String dbPwd;
+
+    public static int ProducerThreadPoolSize = 10;
+    public static int ConsumerThreadPoolSize = 10;
+    @Override
+    public void run(ApplicationArguments var1) throws Exception{
+        System.out.println("开始应用初始化!");
+        ProducerThreadPoolSize = yanglaoAppData.getProducerThreadpoolSize();
+        System.out.println("生产者线程池大小为"+ ProducerThreadPoolSize);
+        ConsumerThreadPoolSize = yanglaoAppData.getVerificationThreadNum();
+        System.out.println("消费者线程池大小为"+ ConsumerThreadPoolSize);
+        System.out.println("初始化redis!");
+        redisConfig.init();
+        String pong = RedisClient.ping();
+        System.out.println(pong);
+        if(pong.equals("PONG"))
+            System.out.println("初始化redis完成!");
+        else
+            System.out.println("初始化redis异常!");
+
+        //读入数据词典
+        try {
+            LOGGER.info("读取民族词典...");
+            dataDictService.readRaceDictConfig();
+            LOGGER.info("读取民族词典完成！");
+        }catch(Exception e){
+            LOGGER.error(e.getMessage());
+        }
+
+        try {
+            LOGGER.info("读取地址词典...");
+            //For dev
+            //dataDictConfig.readRawLocationDictConfig();
+            dataDictService.readLocationDictConfig();
+            LOGGER.info("读取地址词典完成！");
+        }catch(Exception e){
+            LOGGER.error(e.getMessage());
+        }
+
+        try {
+            LOGGER.info("读取数据源词典...");
+            dataDictService.readDataSrcDictConfig();
+            LOGGER.info("读取数据源词典完成！");
+        }catch(Exception e){
+            LOGGER.error(e.getMessage());
+        }
+
+        try {
+            LOGGER.info("读取输出状态词典...");
+            dataDictService.readOutputStatusDictConfig();
+            LOGGER.info("读取输出状态词典完成！");
+        }catch(Exception e){
+            LOGGER.error(e.getMessage());
+        }
+
+        try {
+            LOGGER.info("读取状态说明词典...");
+            dataDictService.readStatusDescriptionDictConfig();
+            LOGGER.info("读取状态说明词典完成！");
+        }catch(Exception e){
+            LOGGER.error(e.getMessage());
+        }
+
+        try {
+            LOGGER.info("读取目的数据源配置...");
+            dataDictService.readTargetDataListConfig();
+            LOGGER.info("读取目的数据源配置完成！");
+        }catch(Exception e){
+            LOGGER.error(e.getMessage());
+        }
+
+        //每次启动的时候，默认使用上次存储的账期
+        //如发起新的认证流程，就会更新
+        String accDateKey = redisKeyService.getAccountDateKey();
+        String accountDate = RedisClient.get(accDateKey);
+        YanglaoAppController.setVerificationDate(accountDate);
+
+        //TODO 测试，同时为生产者和消费者
+        int appType = yanglaoAppData.getYanglaoAppType();
+        if(appType == YANGLAO_APP_INTEGRATED || appType == YANGLAO_APP_PRODUCER){
+            //将定时任务key清除
+            RedisClient.del(redisKeyService.getExecuteDateKey());
+            FetchUserDataManagerRunner userDataManager = new FetchUserDataManagerRunner(dataDictService,dataPlatformService,redisKeyService);
+            ProducerExecutorManager.getInstance().doExecute(userDataManager);
+            System.out.println("PRODUCER-启动用户数据获取线程!");
+        }
+        if(appType == YANGLAO_APP_INTEGRATED || appType == YANGLAO_APP_CONSUMER){
+            //mysql连接性测试
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection conn = DriverManager.getConnection(dbUrl, dbUsername, dbPwd);
+                System.out.println("数据库连接成功!");
+            }catch (Exception e){
+                LOGGER.error("连接数据库失败，请检查配置！");
+                throw new RuntimeException(e.getMessage());
+            }
+
+            //初始化fabric连接
+            fabricManager.setup();
+            //启动验证线程，runner内会pop用户队列，并发起用户数据请求，和区块链操作 -- 这部分也可以仅在生产者启动
+            VerificationManagerRunner verificationManagerRunner = new VerificationManagerRunner(dataDictService, dataPlatformService,
+                    redisKeyService, yanglaoAppData, yanglaoDbOperation);
+            ConsumerExecutorManager.getInstance().doExecute(verificationManagerRunner);
+            System.out.println("CONSUMER-初始化fabric连接，启动验证线程！");
+        }
+        System.out.println("应用初始化结束!");
+    }
+
+}
+

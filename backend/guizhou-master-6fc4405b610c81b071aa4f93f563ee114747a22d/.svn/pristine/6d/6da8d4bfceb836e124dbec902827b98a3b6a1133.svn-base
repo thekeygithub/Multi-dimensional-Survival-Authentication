@@ -1,0 +1,449 @@
+package com.xcuni.guizhouyl.rest.controller;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.xcuni.guizhouyl.ApplicationSetup;
+import com.xcuni.guizhouyl.config.YanglaoAppData;
+import com.xcuni.guizhouyl.data.service.DataDictService;
+import com.xcuni.guizhouyl.data.RedisClient;
+import com.xcuni.guizhouyl.data.database.service.YanglaoDbOperation;
+import com.xcuni.guizhouyl.data.entity.YanglaoDataSrcItemEntity;
+import com.xcuni.guizhouyl.data.entity.YanglaoUserDataSrcEntity;
+import com.xcuni.guizhouyl.data.entity.YanglaoUserInfoEntity;
+import com.xcuni.guizhouyl.rest.entity.*;
+import com.xcuni.guizhouyl.rest.result.JsonRESTResult;
+import com.xcuni.guizhouyl.data.service.DataPlatformService;
+import com.xcuni.guizhouyl.data.service.RedisKeyService;
+import com.xcuni.guizhouyl.rest.thread.*;
+import com.xcuni.guizhouyl.utils.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import static java.lang.Thread.sleep;
+
+@RestController
+@RequestMapping(value = "/yanglao/api/")
+public class YanglaoAppController {
+    final static private Logger LOGGER = LoggerFactory.getLogger(YanglaoAppController.class);
+    final static private String SUCCESS_CODE = "200";
+    final static private int SUCCESS = 200;
+    final static private int ERROR = 500;
+
+    @Autowired
+    YanglaoAppData yanglaoAppData;
+    @Autowired
+    DataDictService dataDictService;
+    @Autowired
+    DataPlatformService dataPlatformService;
+    @Autowired
+    RedisKeyService redisKeyService;
+    @Autowired
+    YanglaoDbOperation yanglaoDbOperation;
+    //账期，Redis key的date部分
+    private static String verificationDate="";
+    public static String getVerificationDate(){
+        return verificationDate;
+    }
+    public static void setVerificationDate(String accdate) {verificationDate=accdate;}
+
+    //测试用，生成随机用户
+    public static int pageIdx = 1;
+
+    //总任务
+    //只有生产者才能执行这个接口，其他实例只需要通过
+    //1、单线程顺序拉取各个区县的名单；如需多线程，将来可改
+    //2、fetchUserDataMangager开始取用户数据
+    @RequestMapping(value =  "/startVerification", method = RequestMethod.POST)
+    public String startVerification(@RequestBody FectchUserInfoRequestEntity req) throws IOException {
+        try {
+            if(yanglaoAppData.getYanglaoAppType() != ApplicationSetup.YANGLAO_APP_PRODUCER
+                && yanglaoAppData.getYanglaoAppType() != ApplicationSetup.YANGLAO_APP_INTEGRATED){
+                LOGGER.warn("只有生产者应用才能执行此操作");
+                return new JsonRESTResult(ERROR, "不是生产者应用！").encode();
+            }
+            if(req.getLocation() == null || req.getLocation().isEmpty()) {
+                req.setLocation("5200");//在本接口中，如果未传入地址id，默认设置为全省
+            }
+            if (!dataDictService.isValidLocationId(req.getLocation())) {
+                LOGGER.error("fetchUserInfoList,传入的地址ID:{}错误，请检查ID或地址词典！", req.getLocation());
+                return new JsonRESTResult(ERROR, "地址id有误！").encode();
+            }
+
+            pageIdx =1;//测试用，每次调用都把页号置为1
+            verificationDate=req.getDate();
+            String accDateKey = redisKeyService.getAccountDateKey();
+            RedisClient.set(accDateKey,verificationDate);//账期放入redis，消费者可使用
+
+            String userQkey = redisKeyService.getUserInfoQueueKey();
+            //将计数kv，和failedQ清空
+            String totalCountKey = redisKeyService.getTotalUserCountKey();
+            String succCountKey = redisKeyService.getSuccUserCountKey();
+            String failedQkey = redisKeyService.getFailedUserInfoQueueKey();
+            RedisClient.del(totalCountKey);
+            RedisClient.del(succCountKey);
+            RedisClient.del(failedQkey);
+
+            //pageStart和pageSize如未传，则设置默认值
+            if(req.getPageStart()<1)
+                req.setPageStart(1);
+            if(req.getPageSize()<1)
+                req.setPageSize(100);
+
+            FetchUserListRunner runner = new FetchUserListRunner(req,
+                    dataDictService, dataPlatformService,redisKeyService);
+            //runner.run();
+            ProducerExecutorManager.getInstance().doExecute(runner);
+
+            //启动监控线程，在验证结束后，进行失败重试，以及数据源调用次数上链
+            sleep(3000);
+            VerificationProgressScanner scanner = new VerificationProgressScanner(yanglaoAppData, redisKeyService,
+                                                                            dataDictService, dataPlatformService);
+            ProducerExecutorManager.getInstance().doExecute(scanner);
+
+        }catch (Exception e){
+            return new JsonRESTResult(ERROR,e.getMessage()).encode();
+        }
+        return new JsonRESTResult(SUCCESS,verificationDate+"养老金认证开始...").encode();
+    }
+
+    /*
+    * 单用户验证接口
+    * */
+    @RequestMapping(value =  "/userVerification", method = RequestMethod.POST)
+    public String userVerification(@RequestBody InvokerSingleUserVerifyEntity req) throws IOException {
+        try {
+            String reqDate = req.getDate();
+            verificationDate=req.getDate();//为redis键值提供date
+            String accDateKey = redisKeyService.getAccountDateKey();
+            RedisClient.set(accDateKey,verificationDate);//账期放入redis，消费者可使用
+
+            YanglaoUserInfoEntity userInfo = req.getUserInfo();
+            String userStr = JSONObject.toJSONString(userInfo);
+            SingleVerificationRunner runner = new SingleVerificationRunner(reqDate, dataDictService, dataPlatformService,
+                    redisKeyService, yanglaoAppData, yanglaoDbOperation, userStr);
+            runner.run();
+        }catch (Exception e){
+            return new JsonRESTResult(ERROR,e.getMessage()).encode();
+        }
+        return new JsonRESTResult(SUCCESS,"success").encode();
+    }
+
+    @RequestMapping(value =  "/queryUserStatus", method = RequestMethod.POST)
+    public String userStatusQuery(@RequestBody QueryUserModelEntity req) throws IOException {
+        JSONObject respObj;
+        try {
+            String id = req.getId();
+            if(id==null || id.isEmpty())
+                throw new RuntimeException("被查询用户身份证号不能为空！");
+
+            String url = yanglaoAppData.getFabricQueryStatusUrl();
+            String response = HttpUtils.sendPOST(url,JSONObject.toJSONString(req));
+
+            respObj = JSONObject.parseObject(response);
+            String statusCode = respObj.getString("statusCode");
+            if(statusCode==null || !statusCode.equals(SUCCESS_CODE)){
+                return new JsonRESTResult(ERROR, response).encode();
+            }
+        }catch (Exception e){
+            return new JsonRESTResult(ERROR,e.getMessage()).encode();
+        }
+        return new JsonRESTResult(respObj).encode();
+    }
+
+    @RequestMapping(value =  "/queryDataSrcNum", method = RequestMethod.POST)
+    public String dataSrcNumQuery(@RequestBody QueryDataSrcCallNumEntity req) throws IOException {
+        JSONObject respObj;
+        try {
+            String dataSrc = req.getDataSrc();
+            if(dataSrc==null || dataSrc.isEmpty())
+                throw new RuntimeException("被查询数据源不能为空！");
+
+            String date = req.getDate();
+            if(date==null || date.isEmpty())
+                throw new RuntimeException("被查询日期不能为空！");
+
+            ChaincodeRequestEntity queryEntity = new ChaincodeRequestEntity();
+            queryEntity.setChannelName(yanglaoAppData.getYanglaoChannelName());
+            queryEntity.setChaincodeName(yanglaoAppData.getQueryChaincode());
+            queryEntity.setFunc(yanglaoAppData.getQueryFuncName());
+            String[] args = new String[2];
+            args[0] = "queryInterface";
+            args[1] = dataSrc+date;
+            queryEntity.setArgs(args);
+            String url = yanglaoAppData.getFabricCommonQueryUrl();
+            String response = HttpUtils.sendPOST(url,JSONObject.toJSONString(queryEntity));
+
+            respObj = JSONObject.parseObject(response);
+            String statusCode = respObj.getString("statusCode");
+            if(statusCode==null || !statusCode.equals(SUCCESS_CODE)){
+                return new JsonRESTResult(ERROR, response).encode();
+            }
+        }catch (Exception e){
+            return new JsonRESTResult(ERROR,e.getMessage()).encode();
+        }
+        return new JsonRESTResult(respObj).encode();
+    }
+
+    //同步调用
+    @RequestMapping(value =  "/fetchUserInfo", method = RequestMethod.POST)
+    public String fetchUserInfo(@RequestBody FectchUserInfoRequestEntity req) throws IOException {
+        FetchUserInfoResultEntity resultEntity;
+        try {
+            resultEntity = dataPlatformService.fetchUserList(req);
+        }catch(Exception e){
+            LOGGER.info("fetchUserInfo接口异常:{}",e.getMessage());
+            return new JsonRESTResult(e.getMessage()).encode();
+        }
+
+        if(!resultEntity.getCode().equals(SUCCESS_CODE))
+        {
+            LOGGER.error("fetchUserList return: code={},message={}",resultEntity.getCode(),resultEntity.getMessage());
+        }
+
+        return new JsonRESTResult(JSONObject.toJSON(resultEntity)).encode();
+    }
+
+    //另起线程异步调用
+    @RequestMapping(value =  "/fetchUserInfoList", method = RequestMethod.POST)
+    public String fetchUserInfoList(@RequestBody FectchUserInfoRequestEntity requestEntity) throws IOException {
+        try {
+            if(!dataDictService.isValidLocationId(requestEntity.getLocation())){
+                LOGGER.error("fetchUserInfoList,传入的地址ID:{}错误，请检查ID或地址词典！",requestEntity.getLocation());
+                return new JsonRESTResult(ERROR,"地址id有误！").encode();
+            }
+            FetchUserByCityRunner runner = new FetchUserByCityRunner(requestEntity,dataPlatformService,redisKeyService);
+            ConsumerExecutorManager.getInstance().doExecute(runner);
+        }catch (Exception e) {
+            return new JsonRESTResult(ERROR,e.getMessage()).encode();
+        }
+        return new JsonRESTResult(SUCCESS,"success").encode();
+    }
+
+    @RequestMapping(value =  "/fetchUserData", method = RequestMethod.POST)
+    public String fetchUserData(@RequestBody  String jsonStr) throws IOException {
+        FetchUserDataResultEntity resultEntity;
+        try {
+            JSONObject jsonObject = JSONObject.parseObject(jsonStr);
+            FetchUserDataRequestEntity requestEntity;
+            requestEntity= JSONObject.parseObject(jsonStr,FetchUserDataRequestEntity.class);
+            resultEntity = dataPlatformService.fetchUserData(requestEntity);
+            if(resultEntity == null)
+                return new JsonRESTResult(ERROR, "接口返回null！").encode();
+        }catch(Exception e){
+            LOGGER.info("fetchUserData接口异常:{}",e.getMessage());
+            return new JsonRESTResult(e.getMessage()).encode();
+        }
+        return new JsonRESTResult(JSONObject.toJSON(resultEntity)).encode();
+    }
+
+    /*
+    * fake接口作为测试数据发生器
+    * */
+    @RequestMapping(value =  "/fakeFetchUserInfoList", method = RequestMethod.POST)
+    public FetchUserInfoResultEntity fakeFecthUserList(@RequestBody FectchUserInfoRequestEntity requestEntity){
+
+        String locationId = requestEntity.getLocation();
+        String date = requestEntity.getDate();
+        int pageStart = requestEntity.getPageStart();
+        int pageSize =requestEntity.getPageSize();
+
+        FetchUserInfoResultEntity resultEntity = new FetchUserInfoResultEntity();
+        resultEntity.setCode("200");
+        FetchUserInfoPageEntity infoPageEntity = new FetchUserInfoPageEntity();
+        int num = yanglaoAppData.getProducerThreadpoolSize();
+        infoPageEntity.setTotalNum(num);
+        infoPageEntity.setPageItems(pageSize);
+        infoPageEntity.setPageNo(pageIdx);
+        pageIdx++;
+        resultEntity.setPageInfo(infoPageEntity);
+
+        List<YanglaoUserInfoEntity> userList = new ArrayList<>();
+
+        IdCardGenerator idCardGenerator = new IdCardGenerator();
+        java.util.Random rand=new java.util.Random();
+        for(int i=0;i<pageSize;i++) {
+            YanglaoUserInfoEntity userEntity = new YanglaoUserInfoEntity();
+            int addNo = rand.nextInt(1000) + 10;
+            userEntity.setAddress("贵阳市中华中路" + String.valueOf(addNo) + "号");
+            userEntity.setIdNo(idCardGenerator.generate());
+            userEntity.setName(UUID.randomUUID().toString().substring(0,7));
+            int age = rand.nextInt(30) + 50;
+            userEntity.setAge(String.valueOf(age));
+            int gender = rand.nextInt(2) + 1;
+            userEntity.setGender(String.valueOf(gender));
+            int race = rand.nextInt(57) + 1;
+            userEntity.setRace(String.valueOf(race));
+
+            userList.add(userEntity);
+        }
+        resultEntity.setUserInfoList(userList);
+        try {//sleep300毫秒，模拟接口处理时间。
+            sleep(300);
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+        }
+        return  resultEntity;
+    }
+
+
+    @RequestMapping(value =  "/fakeFetchUserData", method = RequestMethod.POST)
+    public FetchUserDataResultEntity fakeFecthUserData(@RequestBody FetchUserDataRequestEntity requestEntity){
+
+        FetchUserDataResultEntity resultEntity = new FetchUserDataResultEntity();
+        List<TargetDataEntity> targetDataList = requestEntity.getTargetDataList();
+
+        resultEntity.setCode("200");
+        resultEntity.setMessage("Success");
+        List<YanglaoUserDataSrcEntity> userDataList = new ArrayList<>();
+
+        java.util.Random rand=new java.util.Random();
+        for(TargetDataEntity entity : targetDataList) {
+            YanglaoUserDataSrcEntity dataSrcEntity = new YanglaoUserDataSrcEntity();
+            String dataSrc = entity.getDataSrc();
+            dataSrcEntity.setDataSrc(dataSrc);
+            List<TargetDataItemEntity> dataIdList = entity.getDataList();
+            List<YanglaoDataSrcItemEntity> ylItemList = dataSrcEntity.getDataList();
+            for(TargetDataItemEntity item:dataIdList){
+                String dataId = item.getDataId();
+                YanglaoDataSrcItemEntity ylDataItem = new YanglaoDataSrcItemEntity();
+                ylDataItem.setDataId(dataId);
+                ylDataItem.setDateTime(DateUtils.getRandomTimeStr());
+                //int res = rand.nextInt(2);//0和1按照95%和5%的比例生成
+                int res = CommonUtils.generate01WithRate(0.95);
+                ylDataItem.setResult(String.valueOf(res));
+                ylDataItem.setMessage("OK");
+
+                ylItemList.add(ylDataItem);
+            }
+            userDataList.add(dataSrcEntity);
+        }
+        resultEntity.setUserDataList(userDataList);
+        try {//sleep300毫秒，模拟接口处理时间。
+            sleep(300);
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+        }
+        return resultEntity;
+    }
+
+    /*仅供测试用*/
+    @RequestMapping(value =  "/getUserStatusData", method = RequestMethod.POST)
+    public String getUserStatusData(@RequestBody FectchUserInfoRequestEntity requestEntity){
+
+        String location = requestEntity.getLocation();
+        List<TestUserStatusEntity> userDataList = new ArrayList<>();
+        int totalCount = 2;
+        int size = requestEntity.getPageSize();
+        if(size > 0)
+            totalCount=size;
+
+        IdCardGenerator idCardGenerator = new IdCardGenerator();
+        java.util.Random rand=new java.util.Random();
+        for(int i=0;i<totalCount;i++){
+            TestUserStatusEntity entity = new TestUserStatusEntity();
+            String id = idCardGenerator.generatePerLocation(location);
+            String countyCode = id.substring(0,6);
+
+            StringBuilder sbId = new StringBuilder(id);
+            sbId.replace(6,15,"*********");
+            id=sbId.toString();
+            entity.setId(id);
+
+            int age = rand.nextInt(30) + 60;
+            entity.setAge(String.valueOf(age));
+            int gender = rand.nextInt(2) + 1;
+            String gen = "";
+            if(gender==1)
+                gen="男";
+            else
+                gen="女";
+            entity.setGender(gen);
+
+            //85%汉族
+            int race = 1;
+            double randomnum = Math.random();
+            if(randomnum>0 && randomnum<0.622)
+                race = 1;//汉族62.2%
+            else if(randomnum>0.622 && randomnum<0.744)
+                race = 6;//苗族12.2%
+            else if(randomnum>0.744 && randomnum < 0.823)
+                race = 9;//布依族 7.9%
+            else if(randomnum>0.823 && randomnum < 0.869)
+                race = 12;//侗族 4.6%
+            else if(randomnum>0.869 && randomnum <0.91)
+                race = 15;//土家族 4.1%
+            else if(randomnum>0.91 && randomnum < 0.934)
+                race = 7;//彝族 2.4%
+            else if(randomnum>0.934 && randomnum < 0.95)
+                race = 32;//仡佬族 1.6%
+            else if(randomnum>0.95 && randomnum<0.96)
+                race=25;//水族 1%
+            else{//其余随机
+                race = rand.nextInt(56) + 1;
+            }
+            String raceStr = String.valueOf(race);
+            if(race<10)
+                raceStr = "0"+raceStr;
+            entity.setRace(dataDictService.getRaceNameById(raceStr));
+
+            String name = NameGenetator.getName(gender);
+            StringBuilder nameS = new StringBuilder(name);
+            nameS.replace(0,1,"*");
+            name = nameS.toString();
+            entity.setName(name);
+
+            String county = "";
+            county = idCardGenerator.getCityByCode(countyCode);
+            //LOGGER.info("countyCode={},county={}",countyCode,county);
+            if(county==null)
+                county="";
+            String city = dataDictService.getLoctionNameById(location);
+            if(city==null)
+                city="";
+            //String addr = "贵州省"+city+county;
+            String addr = city+county;
+            int len = addr.length();
+            StringBuilder sbAddr = new StringBuilder(addr);
+            if(len>=5)
+                sbAddr.replace(6,len,"*****");
+            addr=sbAddr.toString();
+            entity.setAddress(addr);
+
+            //用户状态//1,成功；2，死亡；3，判刑；4，失踪；5，疑似；9，未识别
+            String userStatus="1";
+            double randomNumber = Math.random();
+            if(randomNumber>0.80 && randomNumber < 0.85){
+                userStatus="9";
+            }else if(randomNumber>0.90 && randomNumber<0.92){
+                userStatus="2";
+            }else if(randomNumber>0.95 && randomNumber<0.97){
+                userStatus="3";
+            }
+            entity.setUserStatus(userStatus);
+
+            String statusDesc = "验证成功";
+            if(userStatus.equals("2"))
+                statusDesc="死亡";
+            else if(userStatus.equals("3"))
+                statusDesc="判刑";
+            else if(userStatus.equals("9")){
+                statusDesc="无识别数据";
+            }
+            entity.setStatusDesc(statusDesc);
+
+            userDataList.add(entity);
+        }
+
+        String res = JSONArray.toJSONString(userDataList);
+
+        return res;
+    }
+
+}

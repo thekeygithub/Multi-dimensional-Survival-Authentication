@@ -1,0 +1,39 @@
+package com.xcuni.guizhouyl.config;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+
+@Component
+@Data
+//@PropertySource("classpath:application.yml")
+@ConfigurationProperties(prefix = "yanglao")
+@Configuration
+public class YanglaoAppData {
+    private String getUserListUrl;
+    private String getUserDataUrl;
+    private int producerThreadpoolSize;
+    private int verificationThreadNum;
+    private String yanglaoChannelName;
+    private String dataRecordChaincode;
+    private String recordFuncName;
+    private String queryChaincode;
+    private String queryFuncName;
+    private String yanglaoConfigRootPath;
+    private String raceDictPath;
+    private String execDatePath;
+    private boolean enableScheduleJob;
+    private String locationDictPath;
+    private String dataSrcDictPath;
+    private String outputStatusDictPath;
+    private String statusDescDictPath;
+    private String targetDataListPath;
+    private int yanglaoAppType;
+    private String yanglaoVerifyUrl;
+    private String fabricVerifyUrl;
+    private String fabricQueryStatusUrl;
+    private String fabricCommonInvokeUrl;
+    private String fabricCommonQueryUrl;
+    private String fabricRecordCallnumUrl;
+}

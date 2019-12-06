@@ -1,0 +1,312 @@
+name: "Network-Config-example-Test"
+x-type: "hlfv1"
+description: "The network used in the example cello test"
+version: 1.0.0
+client:
+  organization: Org1
+  credentialStore:
+    path: "/tmp/hfc-kvs"
+    cryptoStore:
+      path: "/tmp/hfc-cvs"
+    wallet: no-wallet-name
+channels:
+  mychannel:
+    orderers:
+      - orderer.example.com
+    peers:
+      peer0.org1.example.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer1.org1.example.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+    chaincodes:
+      # the format follows the "cannonical name" of chaincodes by fabric code
+      #- example02:v1
+      #- marbles:1.
+      - 0a4f62a3822643d39aaadb3da5b306d3-zjyaCvtteBRu0uOJeDf2AauWry8De4WZ:v1.2
+#
+# list of participating organizations in this network
+#
+organizations:
+  Org1:
+    mspid: Org1MSP
+
+    peers:
+      - peer0.org1.example.com
+      - peer1.org1.example.com
+#    certificateAuthorities:
+#      - ca-org1
+    adminPrivateKey:
+      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/6b32e59640c594cf633ad8c64b5958ef7e5ba2a205cfeefd44a9e982ce624d93_sk
+      pem: |
+          -----BEGIN PRIVATE KEY-----
+          MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgTqGnpfenWVgmW0AC
+          e5OMyLi2iwt3LoP1A4A+j00N2v6hRANCAAQ3zT/10Wk5whtyiff1Z0u25x4OFSDM
+          yNSfcX3zLxhwRy4kE0gnRarCZL6crDqvrrxLtI57xSNs3LVhNpa6dZI5
+          -----END PRIVATE KEY-----
+
+
+    signedCert:
+      #path: classpath:config/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICKzCCAdGgAwIBAgIRALyX5RJcqIBniZNqfj3btjowCgYIKoZIzj0EAwIwczEL
+          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+          cmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh
+          Lm9yZzEuZXhhbXBsZS5jb20wHhcNMTgwOTA1MDEzOTA1WhcNMjgwOTAyMDEzOTA1
+          WjBsMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMN
+          U2FuIEZyYW5jaXNjbzEPMA0GA1UECxMGY2xpZW50MR8wHQYDVQQDDBZBZG1pbkBv
+          cmcxLmV4YW1wbGUuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEN80/9dFp
+          OcIbcon39WdLtuceDhUgzMjUn3F98y8YcEcuJBNIJ0WqwmS+nKw6r668S7SOe8Uj
+          bNy1YTaWunWSOaNNMEswDgYDVR0PAQH/BAQDAgeAMAwGA1UdEwEB/wQCMAAwKwYD
+          VR0jBCQwIoAgB3bl6rK2ITcVdn5imvirJaLbK6i2Cl08vZ+4OzxvGrUwCgYIKoZI
+          zj0EAwIDSAAwRQIhAMsX0faHt69qYbRIJgsIhRNN9zPEqJp2DidoPO6iHxJYAiB2
+          JgPpB5VBR2vG81ml98C8DHl8zF05WFwZcjyIx1Qg9A==
+          -----END CERTIFICATE-----
+
+#  OrdererOrg:
+#    mspid: OrdererMSP
+#    adminPrivateKey:
+#      pem: |
+#        -----BEGIN PRIVATE KEY-----
+#        MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg33NMbWc5E80ueSIA
+#        iWqRlyC2M+1ce4shkkP/CVKOp4uhRANCAASgMruzeEtmT0Es7AFRf5sMAnsLrvvj
+#        LX3DJlHXqCDxUQY9STAp33/PDNMI9d4EEiUOhn51K0++hvy+XxsQlIn1
+#        -----END PRIVATE KEY-----
+#    signedCert:
+#      pem: |
+#        -----BEGIN PRIVATE KEY-----
+#        MIICCjCCAbGgAwIBAgIRANPhTyHWZkTenKfX4eBv0ZUwCgYIKoZIzj0EAwIwaTEL
+#        MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+#        cmFuY2lzY28xFDASBgNVBAoTC2V4YW1wbGUuY29tMRcwFQYDVQQDEw5jYS5leGFt
+#        cGxlLmNvbTAeFw0xNzA2MjMxMjMzMTlaFw0yNzA2MjExMjMzMTlaMFYxCzAJBgNV
+#        BAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNp
+#        c2NvMRowGAYDVQQDDBFBZG1pbkBleGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqG
+#        SM49AwEHA0IABKAyu7N4S2ZPQSzsAVF/mwwCewuu++MtfcMmUdeoIPFRBj1JMCnf
+#        f88M0wj13gQSJQ6GfnUrT76G/L5fGxCUifWjTTBLMA4GA1UdDwEB/wQEAwIHgDAM
+#        BgNVHRMBAf8EAjAAMCsGA1UdIwQkMCKAIA1GzPDpQ2wbw7biv4DNsgLElDYE+Vxy
+#        7g/4OdPsMAcZMAoGCCqGSM49BAMCA0cAMEQCIEdiGFLzeGMvVNubuZ3iuvRp/Pp6
+#        im3FmABwIbnMarabAiBIHWzz8Yxh9K5ZNkVNZX3fLZ4LlzsKBinbWH9J2wblDg==
+#        -----END PRIVATE KEY-----
+
+orderers:
+  orderer.example.com:
+    url: grpcs://orderer.example.com:8050
+    # these are standard properties defined by the gRPC library
+    # they will be passed in as-is to gRPC client constructor
+    grpcOptions:
+#      ssl-target-name-override: orderer.example.com
+      hostnameOverride: orderer.example.com
+      grpc-max-send-message-length: 15
+      grpc.keepalive_time_ms: 360000
+      grpc.keepalive_timeout_ms: 18000000
+
+    # src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/ordererOrganizations/example.com/tlsca
+    tlsCACerts:
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICNjCCAdygAwIBAgIRAMPAmE5OKavHukgDIavBz6wwCgYIKoZIzj0EAwIwbDEL
+          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+          cmFuY2lzY28xFDASBgNVBAoTC2V4YW1wbGUuY29tMRowGAYDVQQDExF0bHNjYS5l
+          eGFtcGxlLmNvbTAeFw0xODA5MDUwMTM5MDVaFw0yODA5MDIwMTM5MDVaMGwxCzAJ
+          BgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJh
+          bmNpc2NvMRQwEgYDVQQKEwtleGFtcGxlLmNvbTEaMBgGA1UEAxMRdGxzY2EuZXhh
+          bXBsZS5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASnSgoh6Vp0mkB0UJtS
+          cruVCoeoiiX7ekfU86sYoVzfZHqaAgsE3IO8c0JEhnbplWxfO/Iw22sz4Kvp7zJW
+          U4vuo18wXTAOBgNVHQ8BAf8EBAMCAaYwDwYDVR0lBAgwBgYEVR0lADAPBgNVHRMB
+          Af8EBTADAQH/MCkGA1UdDgQiBCBx9sU5u5rZbEhy9ilpbYUNgBaDp0wdOef0I+L8
+          NS3sBzAKBggqhkjOPQQDAgNIADBFAiEAig80whPwsW92RKbhd/eQ4b4sxFLlh5b/
+          rJ+9G0rl24cCIHsZZftHpk7qaanQQQY9PggbeDWnxiN4p5D2NB+WpTdk
+          -----END CERTIFICATE-----
+peers:
+  peer0.org1.example.com:
+    # this URL is used to send endorsement and query requests
+    url: grpcs://peer0.org1.example.com:7050
+    # this URL is used to connect the EventHub and registering event listeners
+    eventUrl: grpcs://peer0.org1.example.com:7150
+#    eventUrl:
+    grpcOptions:
+      #ssl-target-name-override: peer0.org1.example.com
+      grpc.http2.keepalive_time: 15
+      hostnameOverride: peer0.org1.example.com
+      # TODO: The following causes a NoSuchMethodException to be thrown when sending proposals to the peer...
+      # grpc.NettyChannelBuilderOption.maxInboundMessageSize: 9000000
+    tlsCACerts:
+        pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICaDCCAg6gAwIBAgIRAJIjZt/++hGf7VlPXkf9AEEwCgYIKoZIzj0EAwIwdjEL
+          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+          cmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHzAdBgNVBAMTFnRs
+          c2NhLm9yZzEuZXhhbXBsZS5jb20wHhcNMTgwOTA1MDEzOTA1WhcNMjgwOTAyMDEz
+          OTA1WjBbMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UE
+          BxMNU2FuIEZyYW5jaXNjbzEfMB0GA1UEAxMWcGVlcjAub3JnMS5leGFtcGxlLmNv
+          bTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABLkYOZNqCvr40YreKMrZo5ZNHEHu
+          ne6sx+gGr6xMN7p+Yfan9BE4ssE/nBP5qhXQXb53lUGfwOGHHK10MvPr7hmjgZcw
+          gZQwDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcD
+          AjAMBgNVHRMBAf8EAjAAMCsGA1UdIwQkMCKAIIyqm85+dXPOfU22PHT5dZaT4QIB
+          KCyiysfdXNFoRp8VMCgGA1UdEQQhMB+CFnBlZXIwLm9yZzEuZXhhbXBsZS5jb22C
+          BXBlZXIwMAoGCCqGSM49BAMCA0gAMEUCIQCrx+smGlnU/WxP4/jJVLkUpCmy9RjS
+          MR2F511qxuLWCQIgRGBcDlDpCGTzSOJ06LJJYpOCP4p7l7CEsj6Es+vLqSU=
+          -----END CERTIFICATE-----
+  peer1.org1.example.com:
+    url: grpcs://peer1.org1.example.com:7250
+    eventUrl: grpcs://peer1.org1.example.com:7350
+#    eventUrl:
+    grpcOptions:
+      #ssl-target-name-override: peer0.org1.example.com
+      grpc.http2.keepalive_time: 15
+     # negotiationType: TLS  ### purposely commented out to verify these are the defaults
+     # sslProvider: openSSL
+      hostnameOverride: peer1.org1.example.com
+
+    tlsCACerts:
+      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/server.crt
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICZzCCAg6gAwIBAgIRAP/8+nDcJTdlUBsFxzi/dqUwCgYIKoZIzj0EAwIwdjEL
+          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+          cmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHzAdBgNVBAMTFnRs
+          c2NhLm9yZzEuZXhhbXBsZS5jb20wHhcNMTgwOTA1MDEzOTA1WhcNMjgwOTAyMDEz
+          OTA1WjBbMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UE
+          BxMNU2FuIEZyYW5jaXNjbzEfMB0GA1UEAxMWcGVlcjEub3JnMS5leGFtcGxlLmNv
+          bTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABEoYAFa9lq6QojUnhtjEPgg/JKe2
+          lMh3QQyHLPPIoyfOkE56ozEg1Ew1HtdusjpPwGBdTVlrFo0PVH8v3aKzfKyjgZcw
+          gZQwDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcD
+          AjAMBgNVHRMBAf8EAjAAMCsGA1UdIwQkMCKAIIyqm85+dXPOfU22PHT5dZaT4QIB
+          KCyiysfdXNFoRp8VMCgGA1UdEQQhMB+CFnBlZXIxLm9yZzEuZXhhbXBsZS5jb22C
+          BXBlZXIxMAoGCCqGSM49BAMCA0cAMEQCICeHCftnMBq+pYv3QKP2pHuNTmk1IPFa
+          /smcQzacbDKnAiAC6i5gmVvc2IUUO6JRN5Ds5vWKQCQmRlBIUfB/m9b/Cg==
+          -----END CERTIFICATE-----
+
+#  peer0.org2.example.com:
+#    url: grpcs://peer0.org2.example.com:7450
+##如果本文件是给org1使用，请一定不要配置org2的eventUrl，否则会有连接eventhub超时的异常！
+#    eventUrl: grpcs://peer0.org2.example.com:7550
+##    eventUrl:
+#    grpcOptions:
+##      ssl-target-name-override: peer0.org2.example.com
+##      negotiationType: TLS
+##      grpc.NettyChannelBuilderOption.maxInboundMessageSize: 9000000
+##      sslProvider: openSSL
+#      grpc.http2.keepalive_time: 15
+#      hostnameOverride: peer0.org2.example.com
+#
+#    tlsCACerts:
+#      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/server.crt
+#      pem: |
+#          -----BEGIN CERTIFICATE-----
+#          MIICcjCCAhmgAwIBAgIRAKTjFkKbLMrbEP10dpOEqz4wCgYIKoZIzj0EAwIwdjEL
+#          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+#          cmFuY2lzY28xGTAXBgNVBAoTEG9yZzIuZXhhbXBsZS5jb20xHzAdBgNVBAMTFnRs
+#          c2NhLm9yZzIuZXhhbXBsZS5jb20wHhcNMTcwNjIzMTIzMzE5WhcNMjcwNjIxMTIz
+#          MzE5WjBbMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UE
+#          BxMNU2FuIEZyYW5jaXNjbzEfMB0GA1UEAxMWcGVlcjAub3JnMi5leGFtcGxlLmNv
+#          bTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABMDiCfhksPZRhxpGyowvLu8lQjC6
+#          H4y/SiQuTbhG+ZXK99VRyDDoKzkyzDpUxMco1xvD3gafSDvrXrKlZObN9bOjgaIw
+#          gZ8wDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcD
+#          AjAMBgNVHRMBAf8EAjAAMCsGA1UdIwQkMCKAIHu4uj/xHTyM9ZK9QyYGLnfQasSW
+#          PHt65FkoTfvT61qsMDMGA1UdEQQsMCqCFnBlZXIwLm9yZzIuZXhhbXBsZS5jb22C
+#          BXBlZXIwgglsb2NhbGhvc3QwCgYIKoZIzj0EAwIDRwAwRAIgf1MZC8BVgrxO76J+
+#          aCGntiQsicgU1DPMt5l45jXiEeECIAHHYsIZcV8GW7iyKQevvdXSQ3JC7XgyuPrm
+#          eDhWmPcO
+#          -----END CERTIFICATE-----
+#
+#
+#  peer1.org2.example.com:
+#    url: grpcs://peer1.org2.example.com:7650
+#    eventUrl: grpcs://peer1.org2.example.com:7750
+##    eventUrl:
+#    grpcOptions:
+#      #      ssl-target-name-override: peer0.org2.example.com
+#      #      negotiationType: TLS
+#      #      grpc.NettyChannelBuilderOption.maxInboundMessageSize: 9000000
+#      #      sslProvider: openSSL
+#      grpc.http2.keepalive_time: 15
+#      hostnameOverride: peer1.org2.example.com
+#
+#    tlsCACerts:
+#      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/server.crt
+#      pem: |
+#          -----BEGIN CERTIFICATE-----
+#          MIICcjCCAhigAwIBAgIQEV3hkn7yJpdb29dDQvTKWDAKBggqhkjOPQQDAjB2MQsw
+#          CQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy
+#          YW5jaXNjbzEZMBcGA1UEChMQb3JnMi5leGFtcGxlLmNvbTEfMB0GA1UEAxMWdGxz
+#          Y2Eub3JnMi5leGFtcGxlLmNvbTAeFw0xNzA2MjMxMjMzMTlaFw0yNzA2MjExMjMz
+#          MTlaMFsxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQH
+#          Ew1TYW4gRnJhbmNpc2NvMR8wHQYDVQQDExZwZWVyMS5vcmcyLmV4YW1wbGUuY29t
+#          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEpXRG2CwqI+F0UoMSImo3In9R7lze
+#          S+DuL1pLOjF5s05kVAcH604/9FRI61ujvWp4mYXornB+R1pcQwtolYNzPKOBojCB
+#          nzAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC
+#          MAwGA1UdEwEB/wQCMAAwKwYDVR0jBCQwIoAge7i6P/EdPIz1kr1DJgYud9BqxJY8
+#          e3rkWShN+9PrWqwwMwYDVR0RBCwwKoIWcGVlcjEub3JnMi5leGFtcGxlLmNvbYIF
+#          cGVlcjGCCWxvY2FsaG9zdDAKBggqhkjOPQQDAgNIADBFAiEAmzFD5Dd4yR5lKy44
+#          Jdz4hy5AtRLQAmhlmLhli46z0r8CIDXFZJ7EwiD3F/jBT6906IFizjr9CD/DtOC9
+#          bxT5JhIN
+#          -----END CERTIFICATE-----
+#
+#certificateAuthorities:
+#  ca-org1:
+#    url: https://ca-org1.example.com:7850
+#    # the properties specified under this object are passed to the 'http' client verbatim when
+#    # making the request to the Fabric-CA server
+#    httpOptions:
+#      verify: false
+#    tlsCACerts:
+#      pem: |
+#        -----BEGIN CERTIFICATE-----
+#        MIICQjCCAemgAwIBAgIQIR2LR9fa8xs5unnJJ9PFSzAKBggqhkjOPQQDAjBzMQsw
+#        CQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy
+#        YW5jaXNjbzEZMBcGA1UEChMQb3JnMS5leGFtcGxlLmNvbTEcMBoGA1UEAxMTY2Eu
+#        b3JnMS5leGFtcGxlLmNvbTAeFw0xNzA2MjMxMjMzMTlaFw0yNzA2MjExMjMzMTla
+#        MHMxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T
+#        YW4gRnJhbmNpc2NvMRkwFwYDVQQKExBvcmcxLmV4YW1wbGUuY29tMRwwGgYDVQQD
+#        ExNjYS5vcmcxLmV4YW1wbGUuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE
+#        KIVwhTzJrLzzfkIj/O+A18B18k2cSKEWdSbfWZIpFJSb9yw8QoEsbtk4wj9JJD/w
+#        OSa1eDD/pQorejCm25CmBaNfMF0wDgYDVR0PAQH/BAQDAgGmMA8GA1UdJQQIMAYG
+#        BFUdJQAwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgDnKSJOiz8xeEyKk8W472
+#        9MHJHZ5uV3xFwzFjYJ/kABEwCgYIKoZIzj0EAwIDRwAwRAIgMIO+yK3Fbwv1EXMc
+#        tQam42i6ROxSanaAHrbY2oVC1fICICsMpdSS2kbdntUDayi09v4/WRtC59ExCrHl
+#        rg/GXwkv
+#        -----END CERTIFICATE-----
+#
+#    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+#    # needed to enroll and invoke new users.
+#    registrar:
+#      - enrollId: admin
+#        enrollSecret: adminpw
+#    # [Optional] The optional name of the CA.
+#    caName: ca-org1
+#
+#  ca-org2:
+#    url: https://ca-org2.example.com:7950
+#    httpOptions:
+#      verify: false
+#    tlsCACerts:
+#      pem: |
+#        -----BEGIN CERTIFICATE-----
+#        MIICQzCCAeqgAwIBAgIRAJEAD5YytxsnFjw+liBjOQkwCgYIKoZIzj0EAwIwczEL
+#        MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+#        cmFuY2lzY28xGTAXBgNVBAoTEG9yZzIuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh
+#        Lm9yZzIuZXhhbXBsZS5jb20wHhcNMTcwNjIzMTIzMzE5WhcNMjcwNjIxMTIzMzE5
+#        WjBzMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMN
+#        U2FuIEZyYW5jaXNjbzEZMBcGA1UEChMQb3JnMi5leGFtcGxlLmNvbTEcMBoGA1UE
+#        AxMTY2Eub3JnMi5leGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IA
+#        BFW1K2mz8XYewIsUh1qHqImFNbpW+ugND8c6QYB89mPOMHhxil9pE1fX0j/18+e4
+#        uohbFKOP8UTB15c1f/mFSEejXzBdMA4GA1UdDwEB/wQEAwIBpjAPBgNVHSUECDAG
+#        BgRVHSUAMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIKfUfvpGproHcwyFD+0s
+#        E3XfJzYNcif0jNwvgOUFZ4AFMAoGCCqGSM49BAMCA0cAMEQCIGrkModOvz6mcUDA
+#        Zql4YPXU/3ZUbMLw8VuSNHh47lg7AiAPLSKy/v8y8mhebGRCNTYwdkidQCQFrh+2
+#        BIirBFsT0g==
+#        -----END CERTIFICATE-----
+#    registrar:
+#      - enrollId: admin
+#        enrollSecret: adminpw
+#    # [Optional] The optional name of the CA.
+#    caName: ca-org2

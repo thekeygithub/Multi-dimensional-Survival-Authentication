@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xcuni.guizhouyl.data.database.service.UserStatusEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.winter.model.UserStatusEntity" >
+    <result column="userId" property="userid" jdbcType="VARCHAR" />
+    <result column="pointS" property="points" jdbcType="BIT" />
+    <result column="pointT" property="pointt" jdbcType="BIT" />
+    <result column="userStatus" property="alivestatus" jdbcType="CHAR" />
+    <result column="statusDesc" property="alivedesc" jdbcType="CHAR" />
+    <result column="aliveDataSrc" property="alivedatasrc" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <insert id="insert" parameterType="com.winter.model.UserStatusEntity" >
+    insert into tbl_user_status (userId, pointS, pointT, 
+      userStatus, statusDesc, aliveDataSrc,
+      note, updateTime)
+    values (#{userid,jdbcType=VARCHAR}, #{points,jdbcType=BIT}, #{pointt,jdbcType=BIT}, 
+      #{alivestatus,jdbcType=CHAR}, #{alivedesc,jdbcType=CHAR}, #{alivedatasrc,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.winter.model.UserStatusEntity" >
+    insert into tbl_user_status
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="points != null" >
+        pointS,
+      </if>
+      <if test="pointt != null" >
+        pointT,
+      </if>
+      <if test="alivestatus != null" >
+        userStatus,
+      </if>
+      <if test="alivedesc != null" >
+        statusDesc,
+      </if>
+      <if test="alivedatasrc != null" >
+        aliveDataSrc,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="updatetime != null" >
+        updateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="points != null" >
+        #{points,jdbcType=BIT},
+      </if>
+      <if test="pointt != null" >
+        #{pointt,jdbcType=BIT},
+      </if>
+      <if test="alivestatus != null" >
+        #{alivestatus,jdbcType=CHAR},
+      </if>
+      <if test="alivedesc != null" >
+        #{alivedesc,jdbcType=CHAR},
+      </if>
+      <if test="alivedatasrc != null" >
+        #{alivedatasrc,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

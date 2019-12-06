@@ -1,0 +1,19 @@
+package com.xcuni.guizhouyl.rest.entity;
+
+import lombok.Data;
+
+/*
+ * 用于生成测试数据
+ * */
+@Data
+public class TestUserStatusEntity {
+    String id;
+    String name;
+    String gender;
+    String age;
+    String race;
+    String address;
+    String userStatus;  //1,成功；2，死亡；3，判刑；4，失踪；5，疑似；9，未识别
+    String statusDesc;  //1,人工干预；2，强验证；3，分值验证；4，死亡验证；5，判刑验证；6，失踪验证；7，需要核查；9，无数据
+    // String dataSrc;
+}

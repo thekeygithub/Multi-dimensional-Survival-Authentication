@@ -1,0 +1,411 @@
+---
+#
+# Copyright Fujitsu Australia Software Technology, IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+#
+# The network connection profile provides client applications the information about the target
+# blockchain network that are necessary for the applications to interact with it. These are all
+# knowledge that must be acquired from out-of-band sources. This file provides such a source.
+#
+name: "Network-Config-Guizhou-Test"
+
+#
+# Any properties with an "x-" prefix will be treated as application-specific, exactly like how naming
+# in HTTP headers or swagger properties work. The SDK will simply ignore these fields and leave
+# them for the applications to process. This is a mechanism for different components of an application
+# to exchange information that are not part of the standard schema described below. In particular,
+# the "x-type" property with the "hlfv1" value example below is used by Hyperledger Composer to
+# determine the type of Fabric networks (v0.6 vs. v1.0) it needs to work with.
+#
+x-type: "hlfv1"
+
+#
+# Describe what the target network is/does.
+#
+description: "The network used in the Guizhou yanglao test"
+
+#
+# Schema version of the content. Used by the SDK to apply the corresponding parsing rules.
+#
+version: 1.0.0
+
+#
+# The client section is SDK-specific. The sample below is for the node.js SDK
+#
+client:
+  # Which organization does this application instance belong to? The value must be the name of an org
+  # defined under "organizations"
+  organization: Org1
+
+  # Some SDKs support pluggable KV stores, the properties under "credentialStore"
+  # are implementation specific
+  credentialStore:
+    # [Optional]. Specific to FileKeyValueStore.js or similar implementations in other SDKs. Can be others
+    # if using an alternative impl. For instance, CouchDBKeyValueStore.js would require an object
+    # here for properties like url, db name, etc.
+    path: "/tmp/hfc-kvs"
+
+    # [Optional]. Specific to the CryptoSuite implementation. Software-based implementations like
+    # CryptoSuite_ECDSA_AES.js in node SDK requires a key store. PKCS#11 based implementations does
+    # not.
+    cryptoStore:
+      # Specific to the underlying KeyValueStore that backs the crypto key store.
+      path: "/tmp/hfc-cvs"
+
+    # [Optional]. Specific to Composer environment
+    wallet: no-wallet-name
+
+#
+# [Optional]. But most apps would have this section so that channel objects can be constructed
+# based on the content below. If an app is creating channels, then it likely will not need this
+# section.
+# 在贵州项目一期，channel为提前设置
+channels:
+  # name of the channel
+  mychannel:
+    # Required. list of orderers designated by the application to use for transactions on this
+    # channel. This list can be a result of access control ("org1" can only access "ordererA"), or
+    # operational decisions to share loads from applications among the orderers.  The values must
+    # be "names" of orgs defined under "organizations/peers"
+    orderers:
+      - orderer.example.com
+
+    # Required. list of peers from participating orgs
+    peers:
+      peer0.org1.example.com:
+        # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
+        # have the chaincode installed. The app can also use this property to decide which peers
+        # to send the chaincode install request. Default: true
+        endorsingPeer: true
+
+        # [Optional]. will this peer be sent query proposals? The peer must have the chaincode
+        # installed. The app can also use this property to decide which peers to send the
+        # chaincode install request. Default: true
+        chaincodeQuery: true
+
+        # [Optional]. will this peer be sent query proposals that do not require chaincodes, like
+        # queryBlock(), queryTransaction(), etc. Default: true
+        ledgerQuery: true
+
+        # [Optional]. will this peer be the target of the SDK's listener registration? All peers can
+        # produce events but the app typically only needs to connect to one to listen to events.
+        # Default: true
+        eventSource: true
+
+      peer1.org1.example.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.org2.example.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: false
+
+      peer1.org2.example.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: false
+
+    # [Optional]. what chaincodes are expected to exist on this channel? The application can use
+    # this information to validate that the target peers are in the expected state by comparing
+    # this list with the query results of getInstalledChaincodes() and getInstantiatedChaincodes()
+    chaincodes:
+      # the format follows the "cannonical name" of chaincodes by fabric code
+      #- example02:v1
+      #- marbles:1.0
+      - mycc:v1.0
+      - recordCC:v1.6
+      - modelCC:v1.0
+      - queryCC:v1.0
+
+#
+# list of participating organizations in this network
+#
+organizations:
+  Org1:
+    mspid: Org1MSP
+
+    peers:
+      - peer0.org1.example.com
+      - peer1.org1.example.com
+
+    # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
+    # network. Typically certificates provisioning is done in a separate process outside of the
+    # runtime network. Fabric-CA is a special certificate authority that provides a REST APIs for
+    # dynamic certificate management (enroll, revoke, re-enroll). The following section is only for
+    # Fabric-CA servers.
+    #certificateAuthorities:
+     # - ca-org1
+
+    # [Optional]. If the application is going to make requests that are reserved to organization
+    # administrators, including creating/updating channels, installing/instantiating chaincodes, it
+    # must have access to the admin identity represented by the private key and signing certificate.
+    # Both properties can be the PEM string or local path to the PEM file. Note that this is mainly for
+    # convenience in development mode, production systems should not expose sensitive information
+    # this way. The SDK should allow applications to set the org admin identity via APIs, and only use
+    # this route as an alternative when it exists.
+    adminPrivateKey:
+      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/6b32e59640c594cf633ad8c64b5958ef7e5ba2a205cfeefd44a9e982ce624d93_sk
+      pem: |
+          -----BEGIN PRIVATE KEY-----
+          MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgGRNiiJpMYnfxuOAK
+          9w/UebfknFR2q5qZsZEbg8XDjaehRANCAARtr5TiGNRQbotEDyt/kNmkAduHTbx1
+          Ho09UgO6gdgQJ1jc9aDrLOxk63kNzlDwkF5dGPCWQP9bLRq3AuVXNTM7
+          -----END PRIVATE KEY-----
+
+
+    signedCert:
+      #path: classpath:config/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICKjCCAdGgAwIBAgIRAIF1e3CquKPYT3Dakw4zDsswCgYIKoZIzj0EAwIwczEL
+          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+          cmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh
+          Lm9yZzEuZXhhbXBsZS5jb20wHhcNMTgxMTEzMTA1NDAwWhcNMjgxMTEwMTA1NDAw
+          WjBsMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMN
+          U2FuIEZyYW5jaXNjbzEPMA0GA1UECxMGY2xpZW50MR8wHQYDVQQDDBZBZG1pbkBv
+          cmcxLmV4YW1wbGUuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEba+U4hjU
+          UG6LRA8rf5DZpAHbh028dR6NPVIDuoHYECdY3PWg6yzsZOt5Dc5Q8JBeXRjwlkD/
+          Wy0atwLlVzUzO6NNMEswDgYDVR0PAQH/BAQDAgeAMAwGA1UdEwEB/wQCMAAwKwYD
+          VR0jBCQwIoAg5G5J/r341icwnG7YXnLNNBq6P5Z1MsSqa18IiBrfY+0wCgYIKoZI
+          zj0EAwIDRwAwRAIgb7cvLyua1JldLYFlw7iO8ki3r4pkqflEChmpbWQ5wgYCIFc4
+          3qsz3rzz0mhJvud8XUxrsIpjiMqHLvE3HWSyctxU
+          -----END CERTIFICATE-----
+
+
+  # the profile will contain public information about organizations other than the one it belongs to.
+  # These are necessary information to make transaction lifecycles work, including MSP IDs and
+  # peers with a public URL to send transaction proposals. The file will not contain private
+  # information reserved for members of the organization, such as admin key and certificate,
+  # fabric-ca registrar enroll ID and secret, etc.
+  Org2:
+    mspid: Org2MSP
+    peers:
+      - peer0.org2.example.com
+      - peer1.org2.example.com
+    #certificateAuthorities:
+    #      - ca-org2
+
+#
+# List of orderers to send transaction and channel create/update requests to. For the time
+# being only one orderer is needed. If more than one is defined, which one get used by the
+# SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
+#
+orderers:
+  orderer.example.com:
+    url: grpcs://orderer.example.com:7050
+
+    # these are standard properties defined by the gRPC library
+    # they will be passed in as-is to gRPC client constructor
+    grpcOptions:
+#      ssl-target-name-override: orderer.example.com
+      hostnameOverride: orderer.example.com
+      grpc-max-send-message-length: 15
+      grpc.keepalive_time_ms: 360000
+      grpc.keepalive_timeout_ms: 180000
+
+    # src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/ordererOrganizations/example.com/tlsca
+    tlsCACerts:
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICNTCCAdugAwIBAgIQU4LNIbY0DZQNf80h1iMVojAKBggqhkjOPQQDAjBsMQsw
+          CQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy
+          YW5jaXNjbzEUMBIGA1UEChMLZXhhbXBsZS5jb20xGjAYBgNVBAMTEXRsc2NhLmV4
+          YW1wbGUuY29tMB4XDTE4MTExMzEwNTQwMFoXDTI4MTExMDEwNTQwMFowbDELMAkG
+          A1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFu
+          Y2lzY28xFDASBgNVBAoTC2V4YW1wbGUuY29tMRowGAYDVQQDExF0bHNjYS5leGFt
+          cGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABPuMJz202Cl9daDejW5z
+          adNRp+k12eemkWceVXmQdCQ67jKTRLt1rOixwQ1CWy/Z+/QE4DVQmFPXnOQBsJin
+          jTOjXzBdMA4GA1UdDwEB/wQEAwIBpjAPBgNVHSUECDAGBgRVHSUAMA8GA1UdEwEB
+          /wQFMAMBAf8wKQYDVR0OBCIEIOAjMd1hni+Jy35U7Tbe4oAAB3n9ORl3W+pMHR2I
+          +kKmMAoGCCqGSM49BAMCA0gAMEUCIQCmgI8/EXP9qTj7r+Mh6jgmH7oXL6AOMB+H
+          P9pPxzo/7wIgRYvBlqDqdJI2X67IFmn0x8WnunAAaXOB1ZhIgVJEKvs=
+          -----END CERTIFICATE-----
+
+#
+# List of peers to send various requests to, including endorsement, query
+# and event listener registration.
+#
+peers:
+  peer0.org1.example.com:
+    # this URL is used to send endorsement and query requests
+    url: grpcs://peer0.org1.example.com:7051
+
+    # this URL is used to connect the EventHub and registering event listeners
+    eventUrl: grpcs://peer0.org1.example.com:7053
+
+    grpcOptions:
+      #ssl-target-name-override: peer0.org1.example.com
+      grpc.http2.keepalive_time: 15
+      hostnameOverride: peer0.org1.example.com
+      # TODO: The following causes a NoSuchMethodException to be thrown when sending proposals to the peer...
+      # grpc.NettyChannelBuilderOption.maxInboundMessageSize: 9000000
+
+    tlsCACerts:
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICZjCCAg2gAwIBAgIQNNgw0yODyUOF5ethfmKjhDAKBggqhkjOPQQDAjB2MQsw
+          CQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy
+          YW5jaXNjbzEZMBcGA1UEChMQb3JnMS5leGFtcGxlLmNvbTEfMB0GA1UEAxMWdGxz
+          Y2Eub3JnMS5leGFtcGxlLmNvbTAeFw0xODExMTMxMDU0MDBaFw0yODExMTAxMDU0
+          MDBaMFsxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQH
+          Ew1TYW4gRnJhbmNpc2NvMR8wHQYDVQQDExZwZWVyMC5vcmcxLmV4YW1wbGUuY29t
+          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE6hH70ZzSFpFkNA+pAezEmeFyWzFu
+          i6Cp8KqsOUGOPBOyBwKork7n2MTTmkdFukDV515RaRupzSJ+sjl2/UzvvqOBlzCB
+          lDAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC
+          MAwGA1UdEwEB/wQCMAAwKwYDVR0jBCQwIoAgNu7UeagLG+8Odsj+YveVt20eQnVL
+          xlDc6eYkTDoPJggwKAYDVR0RBCEwH4IWcGVlcjAub3JnMS5leGFtcGxlLmNvbYIF
+          cGVlcjAwCgYIKoZIzj0EAwIDRwAwRAIgdktdZTTnvnj9VIT9hUETR63LjRgZ5PC4
+          32rdy5yDGT0CIF1zTwgwM9F0t9iNIsOqZHNp17RpbLsDPl0nRNo2Frh4
+          -----END CERTIFICATE-----
+
+
+  peer1.org1.example.com:
+    url: grpcs://peer1.org1.example.com:8051
+    eventUrl: grpcs://peer1.org1.example.com:8053
+
+    grpcOptions:
+      #ssl-target-name-override: peer0.org1.example.com
+      grpc.http2.keepalive_time: 15
+     # negotiationType: TLS  ### purposely commented out to verify these are the defaults
+     # sslProvider: openSSL
+      hostnameOverride: peer1.org1.example.com
+
+    tlsCACerts:
+      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/server.crt
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICZjCCAg2gAwIBAgIQatUm6AUu7TLM5okooYZz1DAKBggqhkjOPQQDAjB2MQsw
+          CQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy
+          YW5jaXNjbzEZMBcGA1UEChMQb3JnMS5leGFtcGxlLmNvbTEfMB0GA1UEAxMWdGxz
+          Y2Eub3JnMS5leGFtcGxlLmNvbTAeFw0xODExMTMxMDU0MDBaFw0yODExMTAxMDU0
+          MDBaMFsxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQH
+          Ew1TYW4gRnJhbmNpc2NvMR8wHQYDVQQDExZwZWVyMS5vcmcxLmV4YW1wbGUuY29t
+          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEamgLfbKpBdpx9zFLnt7+YUXYDUuL
+          o/QSjzF/BzTexHgsriLPg/i+Eu9mILKmf3jibuvuPuu5U1Jluf2hMzTu/aOBlzCB
+          lDAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC
+          MAwGA1UdEwEB/wQCMAAwKwYDVR0jBCQwIoAgNu7UeagLG+8Odsj+YveVt20eQnVL
+          xlDc6eYkTDoPJggwKAYDVR0RBCEwH4IWcGVlcjEub3JnMS5leGFtcGxlLmNvbYIF
+          cGVlcjEwCgYIKoZIzj0EAwIDRwAwRAIgab160xFLRlhpI5av0aMLbf9G/u6W7zKl
+          xtj+o6GfQmwCIHrwe9IpvNK8MRdgV/xP9JHdLS7hwQJzmZ9UIY4ekCTL
+          -----END CERTIFICATE-----
+
+  peer0.org2.example.com:
+    url: grpcs://peer0.org2.example.com:9051
+#如果本文件是给org1使用，请一定不要配置org2的eventUrl，否则会有连接eventhub超时的异常！
+#    eventUrl: grpcs://peer0.org2.example.com:9053
+    grpcOptions:
+#      ssl-target-name-override: peer0.org2.example.com
+#      negotiationType: TLS
+#      grpc.NettyChannelBuilderOption.maxInboundMessageSize: 9000000
+#      sslProvider: openSSL
+      hostnameOverride: peer0.org2.example.com
+
+    tlsCACerts:
+      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/server.crt
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICaDCCAg6gAwIBAgIRAOvfYvVdLb+nxNLK5YwSAGkwCgYIKoZIzj0EAwIwdjEL
+          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+          cmFuY2lzY28xGTAXBgNVBAoTEG9yZzIuZXhhbXBsZS5jb20xHzAdBgNVBAMTFnRs
+          c2NhLm9yZzIuZXhhbXBsZS5jb20wHhcNMTgxMTEzMTA1NDAwWhcNMjgxMTEwMTA1
+          NDAwWjBbMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UE
+          BxMNU2FuIEZyYW5jaXNjbzEfMB0GA1UEAxMWcGVlcjAub3JnMi5leGFtcGxlLmNv
+          bTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABNSS77+Ky03QRQniocmQjcWuxGl7
+          JwosijIrT1qy7QRTTZzBX+Wp+kSYvE7PiUydbM1dR9R59PmumZpaQBUuZ2ejgZcw
+          gZQwDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcD
+          AjAMBgNVHRMBAf8EAjAAMCsGA1UdIwQkMCKAIMdPYNNbt4TuKuBOwyS3REsJhXu9
+          Phe8nMaZoWh08fImMCgGA1UdEQQhMB+CFnBlZXIwLm9yZzIuZXhhbXBsZS5jb22C
+          BXBlZXIwMAoGCCqGSM49BAMCA0gAMEUCIQDMuZNFN9Gc5Hwmq0SftqlqNLyWk/Vv
+          aTmY3QE742QWxQIgHWgxHpQy3OZ2FbL747fTlikJUhYtI4BogpNVCeYOU5w=
+          -----END CERTIFICATE-----
+
+
+  peer1.org2.example.com:
+    url: grpcs://peer1.org2.example.com:10051
+#    eventUrl: grpcs://peer1.org2.example.com:10053
+    grpcOptions:
+      #      ssl-target-name-override: peer0.org2.example.com
+      #      negotiationType: TLS
+      #      grpc.NettyChannelBuilderOption.maxInboundMessageSize: 9000000
+      #      sslProvider: openSSL
+      hostnameOverride: peer1.org2.example.com
+
+    tlsCACerts:
+      #path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/server.crt
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICZzCCAg2gAwIBAgIQN6z7V+5+ibP3gT64N1Pr2TAKBggqhkjOPQQDAjB2MQsw
+          CQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy
+          YW5jaXNjbzEZMBcGA1UEChMQb3JnMi5leGFtcGxlLmNvbTEfMB0GA1UEAxMWdGxz
+          Y2Eub3JnMi5leGFtcGxlLmNvbTAeFw0xODExMTMxMDU0MDBaFw0yODExMTAxMDU0
+          MDBaMFsxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQH
+          Ew1TYW4gRnJhbmNpc2NvMR8wHQYDVQQDExZwZWVyMS5vcmcyLmV4YW1wbGUuY29t
+          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwSTgM5K1LqYH7IwozKREDwFLghSA
+          Fwk5N7yn7+LTS4HWwU71JxeD6YYxXHbbkXfOQ/gSLkDC0UXImjnKzXM1U6OBlzCB
+          lDAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC
+          MAwGA1UdEwEB/wQCMAAwKwYDVR0jBCQwIoAgx09g01u3hO4q4E7DJLdESwmFe70+
+          F7ycxpmhaHTx8iYwKAYDVR0RBCEwH4IWcGVlcjEub3JnMi5leGFtcGxlLmNvbYIF
+          cGVlcjEwCgYIKoZIzj0EAwIDSAAwRQIhANAgX9J4GULWtNsbG5i7EukE/sL8Rz07
+          iHiENTPGS0GQAiANV1FYMitsUkRxyJDQoTKX03I3Wy0gqWsVURvuxtDpog==
+          -----END CERTIFICATE-----
+
+
+
+#
+# Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
+# certificate management to be done via REST APIs. Application may choose to use a standard
+# Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
+#
+#certificateAuthorities:
+#  ca-org1:
+#    url: https://localhost:7054
+    # the properties specified under this object are passed to the 'http' client verbatim when
+    # making the request to the Fabric-CA server
+ #   httpOptions:
+  #    verify: false #must be false for testing env.
+
+    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+    # needed to enroll and invoke new users.
+  #  registrar: #single entitiy
+  #    enrollId: admin
+  #    enrollSecret: adminpw
+    # [Optional] The optional name of the CA.
+  #  caName: ca0
+
+  #  tlsCACerts:
+      # Comma-Separated list of paths
+  #    path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem
+
+      # Client key and cert for TLS mutual auth with Fabric CA. If the target Fabric CA server
+      # does not have TLS mutual auth turned on, then this section is not needed
+   #   client:
+    #    keyfile: path/to/tls/fabricca/certs/client/client_fabric_client-key.pem
+    #    certfile: path/to/tls/fabricca/certs/client/client_fabric_client.pem
+  #ca-org2:
+   # url: https://localhost:8054
+      # the properties specified under this object are passed to the 'http' client verbatim when
+      # making the request to the Fabric-CA server
+    #httpOptions:
+    #  verify: false #must be no for testing env.
+    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+    # needed to enroll and invoke new users.
+   # registrar: # as an array.
+    #  -  enrollId: admin
+     #    enrollSecret: adminpw
+   # tlsCACerts:
+      # Comma-Separated list of paths
+    #  path: src/test/fixture/sdkintegration/e2e-2Orgs/v1.1/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
+
+      # Client key and cert for TLS mutual auth with Fabric CA. If the target Fabric CA server
+      # does not have TLS mutual auth turned on, then this section is not needed
+    #  client:
+    #    keyfile: path/to/tls/fabricca/certs/client/client_fabric_client-key.pem
+    #    certfile: path/to/tls/fabricca/certs/client/client_fabric_client.pem
+

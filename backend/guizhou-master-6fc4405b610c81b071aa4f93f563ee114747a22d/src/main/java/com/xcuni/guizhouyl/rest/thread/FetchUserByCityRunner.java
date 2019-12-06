@@ -1,0 +1,109 @@
+package com.xcuni.guizhouyl.rest.thread;
+
+import com.alibaba.fastjson.JSON;
+import com.xcuni.guizhouyl.data.RedisClient;
+import com.xcuni.guizhouyl.data.entity.YanglaoUserInfoEntity;
+import com.xcuni.guizhouyl.rest.controller.YanglaoAppController;
+import com.xcuni.guizhouyl.rest.entity.FectchUserInfoRequestEntity;
+import com.xcuni.guizhouyl.rest.entity.FetchUserInfoResultEntity;
+import com.xcuni.guizhouyl.data.service.DataPlatformService;
+import com.xcuni.guizhouyl.data.service.RedisKeyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+
+/**
+ * 业务异步执行验证业务<br>
+ * 说明： 用于执行业务任务单元,由线程池负责调配<br>
+ */
+public class FetchUserByCityRunner implements Runnable {
+    final static private Logger LOGGER = LoggerFactory.getLogger(FetchUserByCityRunner.class);
+    final static private String SUCCESS_CODE = "200";
+    private DataPlatformService dataPlatformService;// = new DataPlatformService();
+    private RedisKeyService redisKeyService;
+    private FectchUserInfoRequestEntity requestEntity;
+
+    /**
+     * 执行状态 <li>0 = 执行结束 <li>1 = 正在执行中 <li>2 = 等待执行
+     */
+    private String execStatus = "2";
+
+    /**
+     * 执行状态 <li>0 = 执行结束 <li>1 = 正在执行中 <li>2 = 等待执行
+     */
+    public String getExecStatus() {
+        return execStatus;
+    }
+
+    /**
+     * 执行状态 <li>0 = 执行结束 <li>1 = 正在执行中 <li>2 = 等待执行
+     */
+    public void setExecStatus(String execStatus) {
+        this.execStatus = execStatus;
+    }
+
+    public FetchUserByCityRunner(FectchUserInfoRequestEntity req,
+                                 DataPlatformService dataPlatformService, RedisKeyService redisKeyService) {
+        requestEntity = req;
+        this.dataPlatformService = dataPlatformService;
+        this.redisKeyService = redisKeyService;
+    }
+
+    @Override
+    public void run() {
+
+        FetchUserInfoResultEntity resultEntity;//返回结果类
+        int currrentPage = requestEntity.getPageStart();
+        int totalPage;
+        String userCountKey = redisKeyService.getCityUserCountKey(requestEntity.getLocation());
+        RedisClient.del(userCountKey);//将每个城市的计数器归零
+        try {
+            do {
+                FectchUserInfoRequestEntity newRequest = requestEntity;
+                newRequest.setPageStart(currrentPage);
+                resultEntity = dataPlatformService.fetchUserList(newRequest);
+
+
+                totalPage = resultEntity.getPageInfo().getTotalNum();//总页数
+                int pageNo = resultEntity.getPageInfo().getPageNo();//当前页号++
+                LOGGER.info("fetchUserList return: code={},message={},totalNo:{},currentNo:{}",
+                        resultEntity.getCode(), resultEntity.getMessage(), totalPage, pageNo);
+                if (currrentPage != pageNo) {
+                    LOGGER.error("fetchUserList，当前页号与返回页号不符");
+                }
+                currrentPage = pageNo + 1;
+
+                //处理结果
+                if (!resultEntity.getCode().equals(SUCCESS_CODE)) {
+                    //发现错误
+                    LOGGER.error("fetchUserList return: code={},message={}", resultEntity.getCode(), resultEntity.getMessage());
+                    continue;//如果返回错误，则继续下一页
+                }
+                //将取回的用户信息发布到redis队列
+                List<YanglaoUserInfoEntity> userInfoList = resultEntity.getUserInfoList();
+
+                String userKey = redisKeyService.getUserInfoQueueKey();
+                String totalCountKey = redisKeyService.getTotalUserCountKey();
+                for (YanglaoUserInfoEntity info : userInfoList) {
+                    String userJsonStr = JSON.toJSONString(info);
+                    RedisClient.lpush(userKey, userJsonStr);//入队列
+                }
+                Long curCount = RedisClient.incrBy(userCountKey, userInfoList.size());
+                Long totalCount = RedisClient.incrBy(totalCountKey, userInfoList.size());
+                LOGGER.debug("当前地址{}用户数：{}", requestEntity.getLocation(), curCount);
+                Long remainCount = RedisClient.llen(userKey);
+                LOGGER.debug("已获取用户总数：{}，目前队列中还有用户:{}", totalCount, remainCount);
+
+            } while (currrentPage <= totalPage);
+
+            YanglaoAppController.pageIdx = 1;//重置测试用的页号
+
+        } catch (Exception e) {
+            LOGGER.error("fetchUserInfo接口异常:{}", e.getMessage());
+        }
+
+
+    }
+
+}

@@ -1,0 +1,755 @@
+POST http://127.0.0.1:8080/yanglao/api/getUserStatusData
+Content-Type: application/json
+
+{
+  "location":"5202",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/getUserStatusData
+Content-Type: application/json
+
+{
+  "location":"5202",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-12-08T043609.500.json
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/getUserStatusData
+Content-Type: application/json
+
+{
+  "location":"5202",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-12-08T043452.500.json
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/getUserStatusData
+Content-Type: application/json
+
+{
+  "location":"5202",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-12-08T043130.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/getUserStatusData
+Content-Type: application/json
+
+{
+  "location":"5202",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-12-08T043009.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/getUserStatusData
+Content-Type: application/json
+
+{
+  "location":"5202",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-12-08T042538.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/getUserStatusData
+Content-Type: application/json
+
+{
+  "location":"5202",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-12-08T042505.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/getUserStatusData
+Content-Type: application/json
+
+{
+  "location":"5202",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-12-08T040521.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/getUserStatusData
+Content-Type: application/json
+
+{
+  "location":"5202",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-12-08T040411.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/getUserStatusData
+Content-Type: application/json
+
+{
+  "location":"5202",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-12-08T040301.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/getUserStatusData
+Content-Type: application/json
+
+{
+  "location":"5202",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-12-08T040156.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/getUserStatusData
+Content-Type: application/json
+
+{
+  "location":"5202",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-12-08T034923.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/getUserStatusData
+Content-Type: application/json
+
+{
+  "location":"5202",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-12-08T034451.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fakeFetchUserInfoList
+Content-Type: application/json
+
+{
+  "location":"522526",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+###
+
+POST http://127.0.0.1:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+  "id":"987654321123456588",
+  "date":"2018-03-30",
+  "userDataJson":"{\"UserInfo\":{\"ID\":\"987654321123456588\",\"Name\":\"zhangsan\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-18T040147.200.txt
+
+###
+
+POST http://127.0.0.1:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+  "id":"987654321123456588",
+  "date":"2018-03-30",
+  "userDataJson":"{\"UserInfo\":{\"ID\":\"987654321123456588\",\"Name\":\"zhangsan\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-18T035332.200.txt
+
+###
+
+POST http://47.104.188.61:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+  "id":"987654321123456588",
+  "date":"2018-03-30",
+  "userDataJson":"{\"UserInfo\":{\"ID\":\"110101819181283850\",\"Name\":\"老王\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-18T035031.200.txt
+
+###
+
+POST http://47.104.188.61:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+  "id":"987654321123456588",
+  "date":"2018-03-30",
+  "userDataJson":"{\"UserInfo\":{\"ID\":\"987654321123456588\",\"Name\":\"zhangsan\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-18T034923.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserData
+Content-Type: application/json
+
+{
+  "UserInfo":{
+    "ID":"522526195510024000",
+    "Name":"李朝光"
+  },
+  "Date":"201811",
+  "TargetDataList":[
+    {
+      "DataSrc":"02",
+      "DataList":[
+        {"DataId":"01"},
+        {"DataId":"02"},
+        {"DataId":"03"}
+      ]
+    },
+    {
+      "DataSrc":"03",
+      "DataList":[
+        {"DataId":"01"}
+      ]
+    },
+    {
+      "DataSrc":"04",
+      "DataList":[
+        {"DataId":"01"},
+        {"DataId":"02"},
+        {"DataId":"03"},
+        {"DataId":"04"}
+      ]
+    }
+  ]
+}
+
+<> 2018-11-17T042914.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserData
+Content-Type: application/json
+
+{
+  "UserInfo":{
+    "ID":"522526195510024000",
+    "Name":"李朝光"
+  },
+  "Date":"201811",
+  "TargetDataList":[
+    {
+      "DataSrc":"02",
+      "DataList":[
+        {"DataId":"01"},
+        {"DataId":"02"},
+        {"DataId":"03"}
+      ]
+    },
+    {
+      "DataSrc":"03",
+      "DataList":[
+        {"DataId":"01"}
+      ]
+    },
+    {
+      "DataSrc":"04",
+      "DataList":[
+        {"DataId":"01"},
+        {"DataId":"02"},
+        {"DataId":"03"},
+        {"DataId":"04"}
+      ]
+    }
+  ]
+}
+
+<> 2018-11-16T110803.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserData
+Content-Type: application/json
+
+{
+  "UserInfo":{
+    "ID":"522526195510024000",
+    "Name":"李朝光"
+  },
+  "Date":"201811",
+  "TargetDataList":[
+    {
+      "DataSrc":"02",
+      "DataList":[
+        {"DataId":"01"},
+        {"DataId":"02"},
+        {"DataId":"03"}
+      ]
+    },
+    {
+      "DataSrc":"03",
+      "DataList":[
+        {"DataId":"01"}
+      ]
+    },
+    {
+      "DataSrc":"04",
+      "DataList":[
+        {"DataId":"01"},
+        {"DataId":"02"},
+        {"DataId":"03"},
+        {"DataId":"04"}
+      ]
+    }
+  ]
+}
+
+<> 2018-11-16T110725.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserData
+Content-Type: application/json
+
+{
+  "UserInfo":{
+    "ID":"522526195510024000",
+    "Name":"李朝光"
+  },
+  "Date":"201811",
+  "TargetDataList":[
+    {
+      "DataSrc":"02",
+      "DataList":[
+        {"DataId":"01"},
+        {"DataId":"02"},
+        {"DataId":"03"}
+      ]
+    },
+    {
+      "DataSrc":"03",
+      "DataList":[
+        {"DataId":"01"}
+      ]
+    },
+    {
+      "DataSrc":"04",
+      "DataList":[
+        {"DataId":"01"},
+        {"DataId":"02"},
+        {"DataId":"03"},
+        {"DataId":"04"}
+      ]
+    }
+  ]
+}
+
+<> 2018-11-16T072933.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserInfo
+Content-Type: application/json
+
+{
+  "location":"522526",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-11-16T054408.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserInfo
+Content-Type: application/json
+
+{
+  "location":"522526",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-11-15T073735.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserInfo
+Content-Type: application/x-www-form-urlencoded
+
+location=522526&date=201811
+
+<> 2018-11-15T072054.415.json
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserInfo
+Content-Type: application/x-www-form-urlencoded
+
+location=522526&date=201811
+
+<> 2018-11-15T071744.415.json
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserInfo
+Content-Type: application/x-www-form-urlencoded
+
+location=522526&date=201811
+
+<> 2018-11-15T071459.415.json
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserInfo
+Content-Type: application/x-www-form-urlencoded
+
+location=522526&date=201811
+
+<> 2018-11-15T071003.415.json
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserInfo
+Content-Type: application/json
+
+{
+  "location":"522526",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-11-15T070919.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserInfo
+Content-Type: application/json
+
+{
+  "location":"522526",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-11-15T065551.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserInfo
+Content-Type: application/json
+
+{
+  "location":"522526",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserInfo
+Content-Type: application/json
+
+{
+  "location":"522526",
+  "date":"201811",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-11-15T065102.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserInfo
+Content-Type: application/json
+
+{
+  "location":"520102",
+  "date":"2018-10-02",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-11-15T064803.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserInfo
+Content-Type: application/json
+
+{
+  "location":"520102",
+  "date":"2018-10-02",
+  "pageStart":1,
+  "pageSize":100
+}
+
+<> 2018-11-15T064603.200.txt
+
+###
+
+POST http://127.0.0.1:8080/yanglao/api/fetchUserInfo
+Content-Type: application/json
+
+{
+  "location":"520102",
+  "date":"2018-10-02",
+  "pageStart":1,
+  "pageSize":100
+}
+
+###
+
+POST http://47.104.188.61:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+  "id":"987654321123456588",
+  "date":"2018-03-30",
+  "userDataJson":"{\"UserInfo\":{\"ID\":\"987654321123456588\",\"Name\":\"zhangsan\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-15T124206-1.200.txt
+
+###
+
+POST http://47.104.188.61:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+  "id":"987654321123456588",
+  "date":"2018-03-30",
+  "userDataJson":"{\"UserInfo\":{\"ID\":\"110101819181283850\",\"Name\":\"老王\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-15T124206.200.txt
+
+###
+
+POST http://47.104.188.61:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+  "id":"987654321123456588",
+  "date":"2018-03-30",
+  "userDataJson":"{\"UserInfo\":{\"ID\":\"110101819181283850\",\"Name\":\"老王\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-15T124145-1.200.txt
+
+###
+
+POST http://47.104.188.61:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+  "id":"987654321123456588",
+  "date":"2018-03-30",
+  "userDataJson":"{\"UserInfo\":{\"ID\":\"987654321123456588\",\"Name\":\"zhangsan\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-15T124145.200.txt
+
+###
+
+POST http://47.104.188.61:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+  "id":"987654321123456588",
+  "date":"2018-03-30",
+  "userDataJson":"{\"UserInfo\":{\"ID\":\"110101819181283850\",\"Name\":\"老王\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-15T124110.200.txt
+
+###
+
+POST http://47.104.188.61:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+  "id":"987654321123456588",
+  "date":"2018-03-30",
+  "userDataJson":"{\"UserInfo\":{\"ID\":\"110101819181283850\",\"Name\":\"老王\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-15T124028.200.txt
+
+###
+
+POST http://47.104.188.61:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+  "id":"987654321123456588",
+  "date":"2018-03-30",
+  "userDataJson":"{\"UserInfo\":{\"ID\":\"110101819181283850\",\"Name\":\"老王\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-14T113842.200.txt
+
+###
+
+POST http://47.104.188.61:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+  "id":"987654321123456588",
+  "date":"2018-03-30",
+  "userDataJson":"{\"UserInfo\":{\"ID\":\"110101819181283850\",\"Name\":\"老王\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-14T113729.200.txt
+
+###
+
+POST http://127.0.0.1:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+"id":"987654321123456588",
+"date":"2018-03-30",
+"userDataJson":"{\"UserInfo\":{\"ID\":\"110101819181283850\",\"Name\":\"老王\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-14T111218.200.txt
+
+###
+
+POST http://127.0.0.1:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+  "id":"987654321123456588",
+  "date":"2018-03-30",
+  "userDataJson":"{\"UserInfo\":{\"ID\":\"987654321123456588\",\"Name\":\"zhangsan\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-14T104918.200.txt
+
+###
+
+POST http://127.0.0.1:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+"id":"987654321123456588",
+"date":"2018-03-30",
+"userDataJson":"{\"UserInfo\":{\"ID\":\"110101819181283850\",\"Name\":\"老王\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-14T052928.200.txt
+
+###
+
+POST http://127.0.0.1:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+"id":"987654321123456588",
+"date":"2018-03-30",
+"userDataJson":"{\"UserInfo\":{\"ID\":\"110101819181283850\",\"Name\":\"老王\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-14T052221.200.txt
+
+###
+
+POST http://127.0.0.1:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+"id":"987654321123456588",
+"date":"2018-03-30",
+"userDataJson":"{\"UserInfo\":{\"ID\":\"110101819181283850\",\"Name\":\"老王\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+###
+
+POST http://127.0.0.1:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+"id":"987654321123456588",
+"date":"2018-03-30",
+"userDataJson":"{\"UserInfo\":{\"ID\":\"110101819181283850\",\"Name\":\"老王\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-14T035111.200.txt
+
+###
+
+POST http://127.0.0.1:8080/fabric/chaincode/invokeVerification
+Content-Type: application/json
+
+{
+"id":"987654321123456588",
+"date":"2018-03-30",
+"userDataJson":"{\"UserInfo\":{\"ID\":\"110101819181283850\",\"Name\":\"老王\"},\"Date\":\"2018-03-30\",\"UserDataList\":[{\"DataSrc\":\"03\",\"DataList\":[{\"DataId\":\"01\",\"Result\":\"0\",\"Message\":\"has been alive\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"\",\"Result\":\"\",\"Message\":\"\",\"DateTime\":\"\"}]},{\"DataSrc\":\"02\",\"DataList\":[{\"DataId\":\"02\",\"Result\":\"1\",\"Message\":\"treated at outpatient service\",\"DateTime\":\"2018-09-30\"},{\"DataId\":\"03\",\"Result\":\"1\",\"Message\":\"purchase drug\",\"DateTime\":\"2018-02-30\"}]}]}"
+}
+
+<> 2018-11-14T034836.200.txt
+
+###
+

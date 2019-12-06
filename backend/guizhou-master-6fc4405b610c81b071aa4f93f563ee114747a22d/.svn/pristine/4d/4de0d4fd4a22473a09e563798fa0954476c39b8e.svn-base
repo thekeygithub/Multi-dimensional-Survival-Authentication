@@ -1,0 +1,145 @@
+#基础公共配置文件，包括应用配置，以及fabric网络相关配置
+#养老应用相关的配置
+yanglao:
+  #只有生产者实例才会去拉取用户数据
+  #1:生产者，2:消费者，0:生产+消费
+  yanglao-app-type: 1
+  #配置文件根目录
+  #yanglao-config-root-path: "classpath:static"
+  yanglao-config-root-path: "./static"
+  #配置执行时间
+  #exec-date-path: "D:\\executeDate.json"
+  exec-date-path: "./executeDate.json"
+  #民族数据字典
+  race-dict-path: "/race.json"
+  #地址数据字典
+  location-dict-path: "/gzLocation.json"
+  #数据源数据字典
+  data-src-dict-path: "/dataSrc.json"
+  #输出状态字典
+  output-status-dict-path: "/modelOutputStatus.json"
+  #状态说明字典
+  status-desc-dict-path: "/statusDescription.json"
+  #验证所需数据源以及数据项的配置
+  target-data-list-path: "/targetDataList.json"
+  #获取待验证用户列表的地址
+  get-user-list-url: "http://10.168.201.144:8094/sv/getUserList"
+  #get-user-list-url: "http://127.0.0.1:8080/yanglao/api/fakeFetchUserInfoList"
+  #获取待验证用户数据的地址
+  get-user-data-url: "http://10.168.201.144:8094/sv/getUserDataList"
+  #get-user-data-url: "http://127.0.0.1:8080/yanglao/api/fakeFetchUserData"
+  #启动验证服务的接口，定时任务本地调用
+  yanglao-verify-url: "http://127.0.0.1:8091/yanglao/api/startVerification"
+  #以下为目前区块链支持的操作接口，原则上只由生产者线程调用
+  #单个用户验证的url，目前可选择任意验证客户端
+  fabric-verify-url: "http://127.0.0.1:8091/fabric/chaincode/invokeVerification"
+  #将数据源的调用次数上链接口
+  fabric-record-callnum-url: "http://127.0.0.1:8091/fabric/chaincode/recordDataSrcCallNum"
+  #从链上查询用户状态接口
+  fabric-query-status-url: "http://127.0.0.1:8091/fabric/chaincode/queryUserStatus"
+  #通用的invoke和query接口
+  fabric-common-invoke-url: "http://127.0.0.1:8091/fabric/chaincode/invokeChaincode"
+  fabric-common-query-url: "http://127.0.0.1:8091/fabric/chaincode/queryChaincode"
+
+  #应用线程池size
+  producer-thread-pool-size: 100
+  #验证任务线程数
+  verification-thread-num: 50
+  #channel
+  yanglao-channel-name: "gzylchannel"
+  #数据记录合约
+  data-record-chaincode: "recordCC"
+  record-func-name: "verify"
+  #查询合约
+  query-chaincode: "queryCC"
+  query-func-name: "queryCC"
+  query-user-status-method: "queryResult"
+  query-verify-detail-method: "queryVerify"
+  query-api-query-num-method: "queryInterface"
+
+
+#Hyperledger Fabric网络相关的配置
+fabric:
+  #fabrc配置文件的根路径
+  #fabric-config-root-dir: "classpath:config"
+  fabric-config-root-dir: "./config"
+  #Fabric网络配置文件路径
+  fabric-network-config: "/network-config/"
+  #Fabric用户配置文件路径
+  fabric-user-config: "/user-config/"
+  #配置证书的文件路径
+  fabric-crypto-config: "/crypto-config/"
+  #配置通道文件路径
+  fabric-channel-artifacts: "/channel-artifacts/"
+  #fabric是否适用TLS
+  fabric-running-tls: "true"
+  #fabric版本
+  fabric-version: "1.2"
+  #本客户端需要连接的channel
+  fabric-channels:
+    -
+      channel-name: "gzylchannel"
+  #网络中部署的chaincode
+      chaincodes:
+        -
+          name: "recordCC"
+          path: "github/src/go/chaincode/recordCC/cmd"
+          version: "1.0"
+        -
+          name: "queryCC"
+          path: "github/src/go/chaincode/queryCC/cmd"
+          version: "1.0"
+#    -
+#      channel-name: "yourchannel"
+#        #网络中部署的chaincode
+#      chaincodes:
+#        -
+#          name: "mycc"
+#          path: "github/src/go/chaincode/example02/cmd"
+#          version: "v1.0"
+#        -
+#          name: "apicc"
+#          path: "github/src/go/chaincode/apicc/cmd"
+#          version: "v1.0"
+
+server.port: 8090
+
+redis:
+  #host: "127.0.0.1"
+  host: 10.168.201.159
+  port: 6379
+  timeout: 0
+
+#pagehelper物理分页配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+  returnPageInfo: check
+
+spring:
+  datasource:
+#    name: mytestdb
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/mytestdb?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+#    #&autoReconnect=true
+#    username: root
+#    password: 123456
+
+    #阿里云测试配置
+    name: gzyldb
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://10.168.201.159:8094/gzyldb?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+  #&autoReconnect=true
+    username: root
+    password: Root@123!
+
+spring.jpa.hibernate.ddl-auto: update
+
+
+##spring配置
+#spring:
+#  profiles:
+#    #模式配置，其中aliyun是测试环境适配，guizhou是生产链适配
+#    active: aliyun

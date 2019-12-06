@@ -1,0 +1,366 @@
+2018-12-09 23:34:19.088 [main] INFO  com.xcuni.guizhouyl.GuizhouylApplication 50 - Starting GuizhouylApplication on LAPTOP-8K73J8G5 with PID 28400 (D:\workspace\Code\hyperledger\guizhouyl\target\classes started by sheng in D:\workspace\Code\hyperledger\guizhouyl)
+2018-12-09 23:34:19.088 [main] INFO  com.xcuni.guizhouyl.GuizhouylApplication 675 - No active profile set, falling back to default profiles: default
+2018-12-09 23:34:19.664 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner 166 - No MyBatis mapper was found in '[com.xcuni.guizhouyl]' package. Please check your configuration.
+2018-12-09 23:34:19.698 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate 244 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-12-09 23:34:19.698 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate 126 - Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-12-09 23:34:19.733 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate 182 - Finished Spring Data repository scanning in 18ms. Found 0 repository interfaces.
+2018-12-09 23:34:19.994 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 330 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$f9180180] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-12-09 23:34:20.382 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer 90 - Tomcat initialized with port(s): 8080 (http)
+2018-12-09 23:34:20.398 [main] INFO  org.apache.coyote.http11.Http11NioProtocol 173 - Initializing ProtocolHandler ["http-nio-8080"]
+2018-12-09 23:34:20.398 [main] INFO  org.apache.catalina.core.StandardService 173 - Starting service [Tomcat]
+2018-12-09 23:34:20.398 [main] INFO  org.apache.catalina.core.StandardEngine 173 - Starting Servlet Engine: Apache Tomcat/9.0.12
+2018-12-09 23:34:20.398 [main] INFO  org.apache.catalina.core.AprLifecycleListener 173 - Loaded APR based Apache Tomcat Native library [1.2.16] using APR version [1.6.3].
+2018-12-09 23:34:20.398 [main] INFO  org.apache.catalina.core.AprLifecycleListener 173 - APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2018-12-09 23:34:20.398 [main] INFO  org.apache.catalina.core.AprLifecycleListener 173 - APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2018-12-09 23:34:21.486 [main] INFO  org.apache.catalina.core.AprLifecycleListener 173 - OpenSSL successfully initialized [OpenSSL 1.0.2m  2 Nov 2017]
+2018-12-09 23:34:22.319 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] 173 - Initializing Spring embedded WebApplicationContext
+2018-12-09 23:34:22.319 [main] INFO  org.springframework.web.context.ContextLoader 285 - Root WebApplicationContext: initialization completed in 3155 ms
+2018-12-09 23:34:22.336 [main] INFO  o.s.boot.web.servlet.ServletRegistrationBean 186 - Servlet dispatcherServlet mapped to [/]
+2018-12-09 23:34:22.336 [main] INFO  o.s.boot.web.servlet.FilterRegistrationBean 248 - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-12-09 23:34:22.336 [main] INFO  o.s.boot.web.servlet.FilterRegistrationBean 248 - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-12-09 23:34:22.336 [main] INFO  o.s.boot.web.servlet.FilterRegistrationBean 248 - Mapping filter: 'formContentFilter' to: [/*]
+2018-12-09 23:34:22.336 [main] INFO  o.s.boot.web.servlet.FilterRegistrationBean 248 - Mapping filter: 'requestContextFilter' to: [/*]
+2018-12-09 23:34:22.457 [main] INFO  c.f.hyperledger.fabric.sdk.config.SdkConfiguration 105 - FileSystem加载SDK配置文件： D:\workspace\Code\hyperledger\guizhouyl\default-config.properties， 配置文件是否存在: false
+2018-12-09 23:34:22.457 [main] INFO  c.f.hyperledger.fabric.sdk.config.SdkConfiguration 109 - ClassPath加载SDK配置文件： default-config.properties， 配置文件是否存在: false
+2018-12-09 23:34:22.457 [main] WARN  c.f.hyperledger.fabric.sdk.config.SdkConfiguration 116 - 加载SDK配置文件: default-config.properties 失败. 使用SDK默认配置
+2018-12-09 23:34:22.457 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 368 - 读取系统环境配置：org.hyperledger.fabric.sdk.integration.InvokeWaitTime => null
+2018-12-09 23:34:22.457 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 374 - 读取变量环境配置：ORG_HYPERLEDGER_FABRIC_SDK_INTEGRATION_INVOKEWAITTIME => null
+2018-12-09 23:34:22.457 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 378 - 使用默认配置：org.hyperledger.fabric.sdk.integration.InvokeWaitTime => 120
+2018-12-09 23:34:22.457 [main] DEBUG c.f.hyperledger.fabric.sdk.config.SdkConfiguration 385 - 添加SDK配置: org.hyperledger.fabric.sdk.integration.InvokeWaitTime => 120
+2018-12-09 23:34:22.457 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 368 - 读取系统环境配置：org.hyperledger.fabric.sdk.integration.DeployWaitTime => null
+2018-12-09 23:34:22.457 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 374 - 读取变量环境配置：ORG_HYPERLEDGER_FABRIC_SDK_INTEGRATION_DEPLOYWAITTIME => null
+2018-12-09 23:34:22.457 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 378 - 使用默认配置：org.hyperledger.fabric.sdk.integration.DeployWaitTime => 120000
+2018-12-09 23:34:22.457 [main] DEBUG c.f.hyperledger.fabric.sdk.config.SdkConfiguration 385 - 添加SDK配置: org.hyperledger.fabric.sdk.integration.DeployWaitTime => 120000
+2018-12-09 23:34:22.457 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 368 - 读取系统环境配置：org.hyperledger.fabric.sdk.integration.ProposalWaitTime => null
+2018-12-09 23:34:22.457 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 374 - 读取变量环境配置：ORG_HYPERLEDGER_FABRIC_SDK_INTEGRATION_PROPOSALWAITTIME => null
+2018-12-09 23:34:22.457 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 378 - 使用默认配置：org.hyperledger.fabric.sdk.integration.ProposalWaitTime => 120000
+2018-12-09 23:34:22.457 [main] DEBUG c.f.hyperledger.fabric.sdk.config.SdkConfiguration 385 - 添加SDK配置: org.hyperledger.fabric.sdk.integration.ProposalWaitTime => 120000
+2018-12-09 23:34:22.457 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 368 - 读取系统环境配置：org.hyperledger.fabric.sdk.integration.application.tls => null
+2018-12-09 23:34:22.457 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 374 - 读取变量环境配置：ORG_HYPERLEDGER_FABRIC_SDK_INTEGRATION_APPLICATION_TLS => null
+2018-12-09 23:34:22.457 [main] DEBUG c.f.hyperledger.fabric.sdk.config.SdkConfiguration 279 - SDK Properties：{org.hyperledger.fabric.sdk.integration.DeployWaitTime=120000, org.hyperledger.fabric.sdk.integration.InvokeWaitTime=120, org.hyperledger.fabric.sdk.integration.ProposalWaitTime=120000}
+2018-12-09 23:34:22.457 [main] DEBUG c.f.hyperledger.fabric.sdk.config.SdkConfiguration 120 - 加载配置文件default-config.properties完毕.
+2018-12-09 23:34:22.479 [main] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler 171 - Initializing ExecutorService 'threadPoolTaskScheduler'
+2018-12-09 23:34:23.116 [main] INFO  org.apache.coyote.http11.Http11NioProtocol 173 - Starting ProtocolHandler ["http-nio-8080"]
+2018-12-09 23:34:23.134 [main] INFO  org.apache.tomcat.util.net.NioSelectorPool 173 - Using a shared selector for servlet write/read
+2018-12-09 23:34:23.151 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer 204 - Tomcat started on port(s): 8080 (http) with context path ''
+2018-12-09 23:34:23.151 [main] INFO  com.xcuni.guizhouyl.GuizhouylApplication 59 - Started GuizhouylApplication in 4.421 seconds (JVM running for 6.132)
+2018-12-09 23:34:24.193 [main] ERROR com.xcuni.guizhouyl.data.RedisClient 51 - get data failed!
+redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool
+	at redis.clients.util.Pool.getResource(Pool.java:53)
+	at redis.clients.jedis.JedisPool.getResource(JedisPool.java:226)
+	at com.xcuni.guizhouyl.data.RedisClient.getJedis(RedisClient.java:47)
+	at com.xcuni.guizhouyl.data.RedisClient.ping(RedisClient.java:70)
+	at com.xcuni.guizhouyl.ApplicationSetup.run(ApplicationSetup.java:72)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:804)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:794)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:324)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
+	at com.xcuni.guizhouyl.GuizhouylApplication.main(GuizhouylApplication.java:18)
+Caused by: redis.clients.jedis.exceptions.JedisConnectionException: java.net.ConnectException: Connection refused: connect
+	at redis.clients.jedis.Connection.connect(Connection.java:207)
+	at redis.clients.jedis.BinaryClient.connect(BinaryClient.java:93)
+	at redis.clients.jedis.BinaryJedis.connect(BinaryJedis.java:1767)
+	at redis.clients.jedis.JedisFactory.makeObject(JedisFactory.java:106)
+	at org.apache.commons.pool2.impl.GenericObjectPool.create(GenericObjectPool.java:883)
+	at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:436)
+	at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:365)
+	at redis.clients.util.Pool.getResource(Pool.java:49)
+	... 10 common frames omitted
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at redis.clients.jedis.Connection.connect(Connection.java:184)
+	... 17 common frames omitted
+2018-12-09 23:34:25.203 [main] ERROR com.xcuni.guizhouyl.data.RedisClient 51 - get data failed!
+redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool
+	at redis.clients.util.Pool.getResource(Pool.java:53)
+	at redis.clients.jedis.JedisPool.getResource(JedisPool.java:226)
+	at com.xcuni.guizhouyl.data.RedisClient.getJedis(RedisClient.java:47)
+	at com.xcuni.guizhouyl.data.RedisClient.ping(RedisClient.java:70)
+	at com.xcuni.guizhouyl.ApplicationSetup.run(ApplicationSetup.java:72)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:804)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:794)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:324)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
+	at com.xcuni.guizhouyl.GuizhouylApplication.main(GuizhouylApplication.java:18)
+Caused by: redis.clients.jedis.exceptions.JedisConnectionException: java.net.ConnectException: Connection refused: connect
+	at redis.clients.jedis.Connection.connect(Connection.java:207)
+	at redis.clients.jedis.BinaryClient.connect(BinaryClient.java:93)
+	at redis.clients.jedis.BinaryJedis.connect(BinaryJedis.java:1767)
+	at redis.clients.jedis.JedisFactory.makeObject(JedisFactory.java:106)
+	at org.apache.commons.pool2.impl.GenericObjectPool.create(GenericObjectPool.java:883)
+	at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:436)
+	at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:365)
+	at redis.clients.util.Pool.getResource(Pool.java:49)
+	... 10 common frames omitted
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at redis.clients.jedis.Connection.connect(Connection.java:184)
+	... 17 common frames omitted
+2018-12-09 23:34:26.215 [main] ERROR com.xcuni.guizhouyl.data.RedisClient 51 - get data failed!
+redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool
+	at redis.clients.util.Pool.getResource(Pool.java:53)
+	at redis.clients.jedis.JedisPool.getResource(JedisPool.java:226)
+	at com.xcuni.guizhouyl.data.RedisClient.getJedis(RedisClient.java:47)
+	at com.xcuni.guizhouyl.data.RedisClient.ping(RedisClient.java:70)
+	at com.xcuni.guizhouyl.ApplicationSetup.run(ApplicationSetup.java:72)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:804)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:794)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:324)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
+	at com.xcuni.guizhouyl.GuizhouylApplication.main(GuizhouylApplication.java:18)
+Caused by: redis.clients.jedis.exceptions.JedisConnectionException: java.net.ConnectException: Connection refused: connect
+	at redis.clients.jedis.Connection.connect(Connection.java:207)
+	at redis.clients.jedis.BinaryClient.connect(BinaryClient.java:93)
+	at redis.clients.jedis.BinaryJedis.connect(BinaryJedis.java:1767)
+	at redis.clients.jedis.JedisFactory.makeObject(JedisFactory.java:106)
+	at org.apache.commons.pool2.impl.GenericObjectPool.create(GenericObjectPool.java:883)
+	at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:436)
+	at org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:365)
+	at redis.clients.util.Pool.getResource(Pool.java:49)
+	... 10 common frames omitted
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at redis.clients.jedis.Connection.connect(Connection.java:184)
+	... 17 common frames omitted
+2018-12-09 23:34:26.216 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener 142 - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2018-12-09 23:34:26.216 [main] ERROR org.springframework.boot.SpringApplication 858 - Application run failed
+java.lang.IllegalStateException: Failed to execute ApplicationRunner
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:807)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:794)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:324)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
+	at com.xcuni.guizhouyl.GuizhouylApplication.main(GuizhouylApplication.java:18)
+Caused by: java.lang.NullPointerException: null
+	at com.xcuni.guizhouyl.ApplicationSetup.run(ApplicationSetup.java:74)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:804)
+	... 5 common frames omitted
+2018-12-09 23:34:26.243 [main] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler 208 - Shutting down ExecutorService 'threadPoolTaskScheduler'
+2018-12-09 23:35:00.329 [main] INFO  com.xcuni.guizhouyl.GuizhouylApplication 50 - Starting GuizhouylApplication on LAPTOP-8K73J8G5 with PID 29892 (D:\workspace\Code\hyperledger\guizhouyl\target\classes started by sheng in D:\workspace\Code\hyperledger\guizhouyl)
+2018-12-09 23:35:00.329 [main] INFO  com.xcuni.guizhouyl.GuizhouylApplication 675 - No active profile set, falling back to default profiles: default
+2018-12-09 23:35:00.996 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner 166 - No MyBatis mapper was found in '[com.xcuni.guizhouyl]' package. Please check your configuration.
+2018-12-09 23:35:01.038 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate 244 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-12-09 23:35:01.039 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate 126 - Bootstrapping Spring Data repositories in DEFAULT mode.
+2018-12-09 23:35:01.061 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate 182 - Finished Spring Data repository scanning in 17ms. Found 0 repository interfaces.
+2018-12-09 23:35:01.325 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 330 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$8bbb3678] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-12-09 23:35:01.578 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer 90 - Tomcat initialized with port(s): 8080 (http)
+2018-12-09 23:35:01.592 [main] INFO  org.apache.coyote.http11.Http11NioProtocol 173 - Initializing ProtocolHandler ["http-nio-8080"]
+2018-12-09 23:35:01.594 [main] INFO  org.apache.catalina.core.StandardService 173 - Starting service [Tomcat]
+2018-12-09 23:35:01.594 [main] INFO  org.apache.catalina.core.StandardEngine 173 - Starting Servlet Engine: Apache Tomcat/9.0.12
+2018-12-09 23:35:01.594 [main] INFO  org.apache.catalina.core.AprLifecycleListener 173 - Loaded APR based Apache Tomcat Native library [1.2.16] using APR version [1.6.3].
+2018-12-09 23:35:01.594 [main] INFO  org.apache.catalina.core.AprLifecycleListener 173 - APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2018-12-09 23:35:01.594 [main] INFO  org.apache.catalina.core.AprLifecycleListener 173 - APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2018-12-09 23:35:02.667 [main] INFO  org.apache.catalina.core.AprLifecycleListener 173 - OpenSSL successfully initialized [OpenSSL 1.0.2m  2 Nov 2017]
+2018-12-09 23:35:02.819 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] 173 - Initializing Spring embedded WebApplicationContext
+2018-12-09 23:35:02.819 [main] INFO  org.springframework.web.context.ContextLoader 285 - Root WebApplicationContext: initialization completed in 2452 ms
+2018-12-09 23:35:02.843 [main] INFO  o.s.boot.web.servlet.ServletRegistrationBean 186 - Servlet dispatcherServlet mapped to [/]
+2018-12-09 23:35:02.843 [main] INFO  o.s.boot.web.servlet.FilterRegistrationBean 248 - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-12-09 23:35:02.843 [main] INFO  o.s.boot.web.servlet.FilterRegistrationBean 248 - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-12-09 23:35:02.843 [main] INFO  o.s.boot.web.servlet.FilterRegistrationBean 248 - Mapping filter: 'formContentFilter' to: [/*]
+2018-12-09 23:35:02.843 [main] INFO  o.s.boot.web.servlet.FilterRegistrationBean 248 - Mapping filter: 'requestContextFilter' to: [/*]
+2018-12-09 23:35:02.950 [main] INFO  c.f.hyperledger.fabric.sdk.config.SdkConfiguration 105 - FileSystem加载SDK配置文件： D:\workspace\Code\hyperledger\guizhouyl\default-config.properties， 配置文件是否存在: false
+2018-12-09 23:35:02.950 [main] INFO  c.f.hyperledger.fabric.sdk.config.SdkConfiguration 109 - ClassPath加载SDK配置文件： default-config.properties， 配置文件是否存在: false
+2018-12-09 23:35:02.950 [main] WARN  c.f.hyperledger.fabric.sdk.config.SdkConfiguration 116 - 加载SDK配置文件: default-config.properties 失败. 使用SDK默认配置
+2018-12-09 23:35:02.950 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 368 - 读取系统环境配置：org.hyperledger.fabric.sdk.integration.InvokeWaitTime => null
+2018-12-09 23:35:02.950 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 374 - 读取变量环境配置：ORG_HYPERLEDGER_FABRIC_SDK_INTEGRATION_INVOKEWAITTIME => null
+2018-12-09 23:35:02.950 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 378 - 使用默认配置：org.hyperledger.fabric.sdk.integration.InvokeWaitTime => 120
+2018-12-09 23:35:02.950 [main] DEBUG c.f.hyperledger.fabric.sdk.config.SdkConfiguration 385 - 添加SDK配置: org.hyperledger.fabric.sdk.integration.InvokeWaitTime => 120
+2018-12-09 23:35:02.950 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 368 - 读取系统环境配置：org.hyperledger.fabric.sdk.integration.DeployWaitTime => null
+2018-12-09 23:35:02.950 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 374 - 读取变量环境配置：ORG_HYPERLEDGER_FABRIC_SDK_INTEGRATION_DEPLOYWAITTIME => null
+2018-12-09 23:35:02.950 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 378 - 使用默认配置：org.hyperledger.fabric.sdk.integration.DeployWaitTime => 120000
+2018-12-09 23:35:02.950 [main] DEBUG c.f.hyperledger.fabric.sdk.config.SdkConfiguration 385 - 添加SDK配置: org.hyperledger.fabric.sdk.integration.DeployWaitTime => 120000
+2018-12-09 23:35:02.950 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 368 - 读取系统环境配置：org.hyperledger.fabric.sdk.integration.ProposalWaitTime => null
+2018-12-09 23:35:02.950 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 374 - 读取变量环境配置：ORG_HYPERLEDGER_FABRIC_SDK_INTEGRATION_PROPOSALWAITTIME => null
+2018-12-09 23:35:02.950 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 378 - 使用默认配置：org.hyperledger.fabric.sdk.integration.ProposalWaitTime => 120000
+2018-12-09 23:35:02.950 [main] DEBUG c.f.hyperledger.fabric.sdk.config.SdkConfiguration 385 - 添加SDK配置: org.hyperledger.fabric.sdk.integration.ProposalWaitTime => 120000
+2018-12-09 23:35:02.950 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 368 - 读取系统环境配置：org.hyperledger.fabric.sdk.integration.application.tls => null
+2018-12-09 23:35:02.950 [main] TRACE c.f.hyperledger.fabric.sdk.config.SdkConfiguration 374 - 读取变量环境配置：ORG_HYPERLEDGER_FABRIC_SDK_INTEGRATION_APPLICATION_TLS => null
+2018-12-09 23:35:02.950 [main] DEBUG c.f.hyperledger.fabric.sdk.config.SdkConfiguration 279 - SDK Properties：{org.hyperledger.fabric.sdk.integration.DeployWaitTime=120000, org.hyperledger.fabric.sdk.integration.InvokeWaitTime=120, org.hyperledger.fabric.sdk.integration.ProposalWaitTime=120000}
+2018-12-09 23:35:02.950 [main] DEBUG c.f.hyperledger.fabric.sdk.config.SdkConfiguration 120 - 加载配置文件default-config.properties完毕.
+2018-12-09 23:35:02.974 [main] INFO  o.s.scheduling.concurrent.ThreadPoolTaskScheduler 171 - Initializing ExecutorService 'threadPoolTaskScheduler'
+2018-12-09 23:35:03.564 [main] INFO  org.apache.coyote.http11.Http11NioProtocol 173 - Starting ProtocolHandler ["http-nio-8080"]
+2018-12-09 23:35:03.582 [main] INFO  org.apache.tomcat.util.net.NioSelectorPool 173 - Using a shared selector for servlet write/read
+2018-12-09 23:35:03.582 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer 204 - Tomcat started on port(s): 8080 (http) with context path ''
+2018-12-09 23:35:03.600 [main] INFO  com.xcuni.guizhouyl.GuizhouylApplication 59 - Started GuizhouylApplication in 3.7 seconds (JVM running for 4.925)
+2018-12-09 23:35:03.671 [main] INFO  com.xcuni.guizhouyl.ApplicationSetup 81 - 读取民族词典...
+2018-12-09 23:35:03.708 [main] INFO  com.xcuni.guizhouyl.ApplicationSetup 83 - 读取民族词典完成！
+2018-12-09 23:35:03.708 [main] INFO  com.xcuni.guizhouyl.ApplicationSetup 89 - 读取地址词典...
+2018-12-09 23:35:03.725 [main] INFO  com.xcuni.guizhouyl.ApplicationSetup 93 - 读取地址词典完成！
+2018-12-09 23:35:03.725 [main] INFO  com.xcuni.guizhouyl.ApplicationSetup 99 - 读取数据源词典...
+2018-12-09 23:35:03.725 [main] INFO  com.xcuni.guizhouyl.ApplicationSetup 101 - 读取数据源词典完成！
+2018-12-09 23:35:03.725 [main] INFO  com.xcuni.guizhouyl.ApplicationSetup 107 - 读取输出状态词典...
+2018-12-09 23:35:03.760 [main] INFO  com.xcuni.guizhouyl.ApplicationSetup 109 - 读取输出状态词典完成！
+2018-12-09 23:35:03.760 [main] INFO  com.xcuni.guizhouyl.ApplicationSetup 115 - 读取状态说明词典...
+2018-12-09 23:35:03.760 [main] INFO  com.xcuni.guizhouyl.ApplicationSetup 117 - 读取状态说明词典完成！
+2018-12-09 23:35:03.760 [main] INFO  com.xcuni.guizhouyl.ApplicationSetup 123 - 读取目的数据源配置...
+2018-12-09 23:35:03.760 [main] INFO  com.xcuni.guizhouyl.ApplicationSetup 125 - 读取目的数据源配置完成！
+2018-12-09 23:35:03.832 [pool-1-thread-1] INFO  c.x.g.rest.thread.FetchUserDataManagerRunner 31 - This is fetch user data manager thread........
+2018-12-09 23:35:04.551 [main] DEBUG c.f.h.fabric.sdk.persistence.KeyValueFileStore 66 - 持久化KEY-VALUE存储系统文件：D:\workspace\Code\hyperledger\guizhouyl\HFCSampletest.properties
+2018-12-09 23:35:04.551 [main] INFO  com.xcuni.guizhouyl.config.ConfigurationManager 44 - Fabric网络配置文件路径:file:/D:/workspace/Code/hyperledger/guizhouyl/target/classes/config/1.2/network-config/network-config-tls.yaml
+2018-12-09 23:35:04.717 [main] DEBUG c.f.hyperledger.fabric.sdk.config.SdkConfiguration 229 - 添加组织: Org1 => com.fuliang.hyperledger.fabric.sdk.model.Organization@372f0a99[
+  name=Org1
+  mspid=Org1MSP
+  caClient=<null>
+  userMap={}
+  peerLocations={}
+  ordererLocations={}
+  eventHubLocations={}
+  admin=<null>
+  peerAdmin=<null>
+  caName=<null>
+  caLocation=<null>
+  caProperties=<null>
+  domainName=<null>
+  logger=Logger[com.fuliang.hyperledger.fabric.sdk.model.Organization]
+]
+2018-12-09 23:35:04.717 [main] DEBUG c.f.hyperledger.fabric.sdk.config.SdkConfiguration 229 - 添加组织: Org2 => com.fuliang.hyperledger.fabric.sdk.model.Organization@4f1afe8f[
+  name=Org2
+  mspid=Org2MSP
+  caClient=<null>
+  userMap={}
+  peerLocations={}
+  ordererLocations={}
+  eventHubLocations={}
+  admin=<null>
+  peerAdmin=<null>
+  caName=<null>
+  caLocation=<null>
+  caProperties=<null>
+  domainName=<null>
+  logger=Logger[com.fuliang.hyperledger.fabric.sdk.model.Organization]
+]
+2018-12-09 23:35:04.771 [main] DEBUG c.f.hyperledger.fabric.sdk.model.OrganizationUser 173 - 从 store 缓存恢复User：com.fuliang.hyperledger.fabric.sdk.model.OrganizationUser@22f02996[
+  mspId=<null>
+  name=admin
+  roles=<null>
+  account=<null>
+  affiliation=<null>
+  organization=Org1
+  enrollmentSecret=<null>
+  enrollment=<null>
+  storeKey=user.adminOrg1
+  logger=Logger[com.fuliang.hyperledger.fabric.sdk.model.OrganizationUser]
+]
+2018-12-09 23:35:04.771 [main] DEBUG c.f.hyperledger.fabric.sdk.model.OrganizationUser 116 - 向  store 缓存存储User：com.fuliang.hyperledger.fabric.sdk.model.OrganizationUser@22f02996[
+  mspId=<null>
+  name=admin
+  roles=<null>
+  account=<null>
+  affiliation=<null>
+  organization=Org1
+  enrollmentSecret=<null>
+  enrollment=org.hyperledger.fabric.sdk.NetworkConfig$1@42c0a16e
+  storeKey=user.adminOrg1
+  logger=Logger[com.fuliang.hyperledger.fabric.sdk.model.OrganizationUser]
+]
+2018-12-09 23:35:04.771 [main] ERROR c.f.hyperledger.fabric.sdk.model.OrganizationUser 132 - 用户的状态保存到键值存储区异常
+java.io.NotSerializableException: org.hyperledger.fabric.sdk.NetworkConfig$1
+	at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1184)
+	at java.io.ObjectOutputStream.defaultWriteFields(ObjectOutputStream.java:1548)
+	at java.io.ObjectOutputStream.writeSerialData(ObjectOutputStream.java:1509)
+	at java.io.ObjectOutputStream.writeOrdinaryObject(ObjectOutputStream.java:1432)
+	at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1178)
+	at java.io.ObjectOutputStream.writeObject(ObjectOutputStream.java:348)
+	at com.fuliang.hyperledger.fabric.sdk.model.OrganizationUser.storeState(OrganizationUser.java:125)
+	at com.fuliang.hyperledger.fabric.sdk.model.OrganizationUser.setEnrollment(OrganizationUser.java:234)
+	at com.fuliang.hyperledger.fabric.sdk.core.UserManager.getOrgAdmin(UserManager.java:60)
+	at com.xcuni.guizhouyl.fabric.FabricManager.getTheClient(FabricManager.java:77)
+	at com.xcuni.guizhouyl.fabric.FabricManager.setup(FabricManager.java:96)
+	at com.xcuni.guizhouyl.ApplicationSetup.run(ApplicationSetup.java:157)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:804)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:794)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:324)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
+	at com.xcuni.guizhouyl.GuizhouylApplication.main(GuizhouylApplication.java:18)
+2018-12-09 23:35:04.771 [main] DEBUG c.f.hyperledger.fabric.sdk.model.OrganizationUser 116 - 向  store 缓存存储User：com.fuliang.hyperledger.fabric.sdk.model.OrganizationUser@22f02996[
+  mspId=Org1MSP
+  name=admin
+  roles=<null>
+  account=<null>
+  affiliation=<null>
+  organization=Org1
+  enrollmentSecret=<null>
+  enrollment=org.hyperledger.fabric.sdk.NetworkConfig$1@42c0a16e
+  storeKey=user.adminOrg1
+  logger=Logger[com.fuliang.hyperledger.fabric.sdk.model.OrganizationUser]
+]
+2018-12-09 23:35:04.771 [main] ERROR c.f.hyperledger.fabric.sdk.model.OrganizationUser 132 - 用户的状态保存到键值存储区异常
+java.io.NotSerializableException: org.hyperledger.fabric.sdk.NetworkConfig$1
+	at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1184)
+	at java.io.ObjectOutputStream.defaultWriteFields(ObjectOutputStream.java:1548)
+	at java.io.ObjectOutputStream.writeSerialData(ObjectOutputStream.java:1509)
+	at java.io.ObjectOutputStream.writeOrdinaryObject(ObjectOutputStream.java:1432)
+	at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1178)
+	at java.io.ObjectOutputStream.writeObject(ObjectOutputStream.java:348)
+	at com.fuliang.hyperledger.fabric.sdk.model.OrganizationUser.storeState(OrganizationUser.java:125)
+	at com.fuliang.hyperledger.fabric.sdk.model.OrganizationUser.setMspId(OrganizationUser.java:245)
+	at com.fuliang.hyperledger.fabric.sdk.core.UserManager.getOrgAdmin(UserManager.java:61)
+	at com.xcuni.guizhouyl.fabric.FabricManager.getTheClient(FabricManager.java:77)
+	at com.xcuni.guizhouyl.fabric.FabricManager.setup(FabricManager.java:96)
+	at com.xcuni.guizhouyl.ApplicationSetup.run(ApplicationSetup.java:157)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:804)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:794)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:324)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
+	at com.xcuni.guizhouyl.GuizhouylApplication.main(GuizhouylApplication.java:18)
+2018-12-09 23:35:04.787 [main] DEBUG c.f.hyperledger.fabric.sdk.model.OrganizationUser 116 - 向  store 缓存存储User：com.fuliang.hyperledger.fabric.sdk.model.OrganizationUser@22f02996[
+  mspId=Org1MSP
+  name=admin
+  roles=<null>
+  account=<null>
+  affiliation=<null>
+  organization=Org1
+  enrollmentSecret=<null>
+  enrollment=org.hyperledger.fabric.sdk.NetworkConfig$1@42c0a16e
+  storeKey=user.adminOrg1
+  logger=Logger[com.fuliang.hyperledger.fabric.sdk.model.OrganizationUser]
+]
+2018-12-09 23:35:04.788 [main] ERROR c.f.hyperledger.fabric.sdk.model.OrganizationUser 132 - 用户的状态保存到键值存储区异常
+java.io.NotSerializableException: org.hyperledger.fabric.sdk.NetworkConfig$1
+	at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1184)
+	at java.io.ObjectOutputStream.defaultWriteFields(ObjectOutputStream.java:1548)
+	at java.io.ObjectOutputStream.writeSerialData(ObjectOutputStream.java:1509)
+	at java.io.ObjectOutputStream.writeOrdinaryObject(ObjectOutputStream.java:1432)
+	at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1178)
+	at java.io.ObjectOutputStream.writeObject(ObjectOutputStream.java:348)
+	at com.fuliang.hyperledger.fabric.sdk.model.OrganizationUser.storeState(OrganizationUser.java:125)
+	at com.fuliang.hyperledger.fabric.sdk.model.OrganizationUser.setRoles(OrganizationUser.java:261)
+	at com.fuliang.hyperledger.fabric.sdk.core.UserManager.getOrgAdmin(UserManager.java:62)
+	at com.xcuni.guizhouyl.fabric.FabricManager.getTheClient(FabricManager.java:77)
+	at com.xcuni.guizhouyl.fabric.FabricManager.setup(FabricManager.java:96)
+	at com.xcuni.guizhouyl.ApplicationSetup.run(ApplicationSetup.java:157)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:804)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:794)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:324)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
+	at com.xcuni.guizhouyl.GuizhouylApplication.main(GuizhouylApplication.java:18)
+2018-12-09 23:35:08.248 [pool-4-thread-1] INFO  c.x.g.rest.thread.VerificationManagerRunner 38 - This is verificaton manager thread........
