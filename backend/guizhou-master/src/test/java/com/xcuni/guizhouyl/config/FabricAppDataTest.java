@@ -1,0 +1,69 @@
+package com.xcuni.guizhouyl.config;
+
+import com.alibaba.fastjson.JSONObject;
+import com.xcuni.guizhouyl.rest.controller.YanglaoAppController;
+import com.xcuni.guizhouyl.rest.entity.FectchUserInfoRequestEntity;
+import com.xcuni.guizhouyl.rest.entity.FetchUserDataRequestEntity;
+import com.xcuni.guizhouyl.utils.JsonUtils;
+import net.minidev.json.JSONUtil;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Component;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.ResourceUtils;
+import org.yaml.snakeyaml.Yaml;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.URL;
+import java.util.LinkedHashMap;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest
+public class FabricAppDataTest {
+    @Autowired
+    FabricAppData appData;
+    @Autowired
+    YanglaoAppData ylAppData;
+
+    @Test
+    public void appDataTest() {
+        String tt = ylAppData.getFabricVerifyUrl();
+        String path = appData.getFabricNetworkConfig();
+    }
+
+    @Test
+    public void testJSONtoPOJO() {
+        FectchUserInfoRequestEntity entity = new FectchUserInfoRequestEntity();
+        entity.setDate("123");
+        entity.setLocation("123234");
+        entity.setPageSize(100);
+        entity.setPageStart(1);
+
+        String entityStr = JSONObject.toJSONString(entity);
+
+        FectchUserInfoRequestEntity entity1 = JSONObject.parseObject(entityStr, FectchUserInfoRequestEntity.class);
+
+        String tt = "{\"Date\":\"123\",\"Location\":\"123234\",\"PageSize\":100,\"PageStart\":1}";
+        FectchUserInfoRequestEntity entity2 = JSONObject.parseObject(tt, FectchUserInfoRequestEntity.class);
+    }
+
+    @Test
+    public void testReadYaml() {
+        Yaml yaml = new Yaml();
+        String path = ylAppData.getYanglaoConfigRootPath() + "/application.yml";
+        try {
+            URL url = ResourceUtils.getURL(path);
+            File file = ResourceUtils.getFile(url);
+            Object result = yaml.load(new FileInputStream(file));
+            LinkedHashMap<String, String> map = (LinkedHashMap<String, String>) (result);
+            String dt = map.get("execute-date");
+            System.out.println("dt is " + dt);
+
+        } catch (Exception e) {
+
+        }
+    }
+}
