@@ -1,0 +1,80 @@
+#基础公共配置文件，包括应用配置，以及fabric网络相关配置
+yanglao:
+  #channel
+  yanglao-channel-name: "mychannel"
+  #数据目录和需求合约方法
+  data-chaincode: "0a4f62a3822643d39aaadb3da5b306d3-zjyaCvtteBRu0uOJeDf2AauWry8De4WZ"
+
+    #数据目录和需求合约方法
+  departments:
+    - name: "01"
+      id: "01"
+      strkey: "department_01"
+    - name: "02"
+      id: "02"
+      strkey: "department_02"
+    - name: "03"
+      id: "03"
+      strkey: "department_03"
+    - name: "04"
+      id: "04"
+      strkey: "department_04"
+    - name: "05"
+      id: "05"
+      strkey: "department_05"
+    - name: "06"
+      id: "06"
+      strkey: "department_06"
+
+
+#Hyperledger Fabric网络相关的配置
+fabric:
+  #fabrc配置文件的根路径
+  fabric-config-root-dir: "src/main/resources/config"
+#  fabric-config-root-dir: "./config"
+  #Fabric网络配置文件路径
+  fabric-network-config: "/network-config/"
+  #Fabric用户配置文件路径
+  fabric-user-config: "/user-config/"
+  #配置证书的文件路径
+  fabric-crypto-config: "/crypto-config/"
+  #配置通道文件路径
+  fabric-channel-artifacts: "/channel-artifacts/"
+  #fabric是否适用TLS
+  fabric-running-tls: "true"
+  #fabric版本
+  fabric-version: "1.2.1"
+  #本客户端需要连接的channel
+  fabric-channels:
+    - channel-name: "mychannel"
+      #网络中部署的chaincode
+      chaincodes:
+#        - name: "dataCccc"
+        - name: "0a4f62a3822643d39aaadb3da5b306d3-zjyaCvtteBRu0uOJeDf2AauWry8De4WZ"
+          path: "/opt/cello/fabric-1.2/examples/chaincode/go/data"
+          version: "v1.2"
+ipfs:
+  address: "/ip4/60.205.213.254/tcp/5001"
+
+server.port: 8080
+server:
+  tomcat:
+    max-http-post-size: -1
+
+
+
+
+spring:
+  datasource:
+    name: trace_db
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://60.205.213.254:3306/trace_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&allowMultiQueries=true #mysql批量更新需要加上参数allowMultiQueries=true
+    username: root
+    password: GUIZHOU_root_123456
+
+
+mybatis:
+  #对应实体类路径
+  type-aliases-package: com.xcuni.guizhouyl.model
+  #对应mapper映射文件路径
+  mapper-locations: classpath:mapper/*.xml

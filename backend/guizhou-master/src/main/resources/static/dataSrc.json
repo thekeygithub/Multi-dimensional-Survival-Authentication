@@ -1,0 +1,416 @@
+[
+  {
+    "dataSrcCode": "01",
+    "dataSrcName": "人社",
+    "dataList": [
+      {
+        "dataId": "01",
+        "dataName": "疑似核查",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "核查失败"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "核查成功"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      },
+      {
+        "dataId": "02",
+        "dataName": "死亡数据",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "存活"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "死亡"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      },
+      {
+        "dataId": "03",
+        "dataName": "人工干预",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "生存状态修改为存活"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "生存状态修改为死亡"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "dataSrcCode": "02",
+    "dataSrcName": "医保",
+    "dataList": [
+      {
+        "dataId": "01",
+        "dataName": "住院",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "未发生住院行为"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "有住院行为"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      },
+      {
+        "dataId": "02",
+        "dataName": "门诊",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "未发生门诊行为"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "有门诊行为"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      },
+      {
+        "dataId": "03",
+        "dataName": "买药",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "未发生买药行为"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "有买药行为"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "dataSrcCode": "03",
+    "dataSrcName": "民政",
+    "dataList": [
+      {
+        "dataId": "01",
+        "dataName": "火化人员",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "未查到火化数据"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "查到火化数据"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "dataSrcCode": "04",
+    "dataSrcName": "公安",
+    "dataList": [
+      {
+        "dataId": "01",
+        "dataName": "死亡户籍注销",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "未发生注销"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "已注销"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      },
+      {
+        "dataId": "02",
+        "dataName": "意外死亡",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "未发生意外死亡"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "发生意外死亡"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      },
+      {
+        "dataId": "03",
+        "dataName": "判刑",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "未被判刑"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "有被判刑"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      },
+      {
+        "dataId": "04",
+        "dataName": "住宿记录",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "无住宿记录"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "有住宿记录"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "dataSrcCode": "05",
+    "dataSrcName": "卫健委",
+    "dataList": [
+      {
+        "dataId": "01",
+        "dataName": "医院死亡",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "未在医院死亡"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "有在医院死亡"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      },
+      {
+        "dataId": "02",
+        "dataName": "体检",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "未发生体检行为"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "有体检行为"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      },
+      {
+        "dataId": "03",
+        "dataName": "慢病",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "无慢病记录"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "有慢病记录"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "dataSrcCode": "06",
+    "dataSrcName": "法院",
+    "dataList": [
+      {
+        "dataId": "01",
+        "dataName": "判刑",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "未被法院判刑"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "有被法院判刑"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "dataSrcCode": "07",
+    "dataSrcName": "交通",
+    "dataList": [
+      {
+        "dataId": "01",
+        "dataName": "出行记录",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "无出行记录"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "有出行记录"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "dataSrcCode": "08",
+    "dataSrcName": "运营商",
+    "dataList": [
+      {
+        "dataId": "01",
+        "dataName": "开户",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "无运营商开户记录"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "有运营商开户记录"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      },
+      {
+        "dataId": "02",
+        "dataName": "通讯记录",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "无通讯记录"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "有通讯记录"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "dataSrcCode": "09",
+    "dataSrcName": "银行",
+    "dataList": [
+      {
+        "dataId": "01",
+        "dataName": "开户",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "无银行开户记录"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "有银行开户记录"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      },
+      {
+        "dataId": "02",
+        "dataName": "账户活动",
+        "resultEnum": [
+          {
+            "resultId": "0",
+            "resultDesc": "无账户活动"
+          },
+          {
+            "resultId": "1",
+            "resultDesc": "有账户活动"
+          },
+          {
+            "resultId": "9",
+            "resultDesc": "调用错误"
+          }
+        ]
+      }
+    ]
+  }
+]
