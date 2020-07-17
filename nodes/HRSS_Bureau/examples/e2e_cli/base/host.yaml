@@ -1,0 +1,18 @@
+47.94.241.242 zookeeper0.guizhou.com
+47.94.241.242 kafka0.guizhou.com
+47.94.241.242 kafka1.guizhou.com
+47.94.241.242 orderer0.guizhou.com
+47.94.241.242 peer0.org1.guizhou.com
+47.94.241.242 peer1.org1.guizhou.com
+
+60.205.213.254 zookeeper1.guizhou.com
+60.205.213.254 kafka2.guizhou.com
+60.205.213.254 orderer1.guizhou.com
+60.205.213.254 peer0.org2.guizhou.com
+60.205.213.254 peer1.org2.guizhou.com
+
+140.143.236.52 zookeeper2.guizhou.com
+140.143.236.52 kafka3.guizhou.com
+140.143.236.52 orderer2.guizhou.com
+140.143.236.52 peer0.org3.guizhou.com
+140.143.236.52 peer1.org3.guizhou.com
