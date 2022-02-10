@@ -24,7 +24,7 @@
         <java.version>1.8</java.version>
         <json.fastjson.version>1.2.47</json.fastjson.version>
         <jedis.version>2.9.0</jedis.version>
-        <org.hibernate-version>3.6.10.Final</org.hibernate-version>
+        <org.hibernate-version>5.4.24.Final</org.hibernate-version>
     </properties>
     <repositories>
         <repository>
